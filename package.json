@@ -1,0 +1,19 @@
+{
+  "name": "firefly_backend",
+  "version": "1.0.0",
+  "description": "FireFly backend codebase for APIs which will used by Adminside and FlutterApplication",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "FireFly",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-router": "0.0.1",
+    "mongoose": "^5.11.9",
+    "path": "^0.12.7"
+  }
+}
