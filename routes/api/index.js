@@ -1,6 +1,6 @@
 const router = require("express").Router();
-router.get("/", (req, res) => {
+const user = require('./user');
 
-    res.send("Routing seetup is done");
-});
+
+router.use('/user', user);
 module.exports = router;

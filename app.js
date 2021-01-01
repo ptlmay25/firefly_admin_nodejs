@@ -16,7 +16,7 @@ app.use("/api", routes);
 //Import Datbase URL
 var db = require("./config/conn").url;
 
-//MongoDB Datbase Connection 
+//MongoDB Datbase Connection
 mongoose
     .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("MongoDB Connected"))
