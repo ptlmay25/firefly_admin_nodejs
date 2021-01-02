@@ -47,10 +47,20 @@ const UserSchema = new Schema({
     IFSC: {
         type: String
     },
-
-
-
-
-
+    joinDate: {
+        type: Date
+    },
+    DOB: {
+        type: Date
+    },
+    userImg: {
+        type: String
+    },
+    aadharCardNo: {
+        type: String
+    }
+}, {
+    versionKey: false,
+    timestamps: true,
 });
 module.exports = user = mongoose.model("user", UserSchema);

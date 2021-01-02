@@ -37,10 +37,93 @@ class UserController {
                 collection.UPI = req.body.UPI;
                 collection.bankAccountNo = req.body.bankAccountNo;
                 collection.IFSC = req.body.IFSC;
+                collection.DOB = req.body.DOB;
+                collection.userImg = req.body.userImg;
+                collection.aadharCardNo = req.body.aadharCardNo;
                 collection.save();
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     message: "new user collection created successfully",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+    static async update(req, res) {
+        try {
+            const userId = req.params.userId;
+            if (!userId && userId === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper userId",
+                });
+            } else {
+                await Collection.updateOne({ _id: userId }, {
+                    username: req.body.username,
+                    gender: req.body.gender,
+                    email: req.body.email,
+                    password: req.body.password,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    mobileNo: req.body.mobileNo,
+                    homeAddress: req.body.homeAddress,
+                    city: req.body.city,
+                    state: req.body.state,
+                    zipcode: req.body.zipcode,
+                    country: req.body.country,
+                    UPI: req.body.UPI,
+                    bankAccountNo: req.body.bankAccountNo,
+                    IFSC: req.body.IFSC,
+                    DOB: req.body.DOB,
+                    userImg: req.body.userImg,
+                    aadharCardNo: req.body.aadharCardNo,
+                });
+            }
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                message: "userloyee Data updated successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+    static async viewAll(req, res) {
+        try {
+            const collections = await Collection.find({});
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                data: collections,
+            });
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+    static async view(req, res) {
+        try {
+            const userId = req.params.userId;
+            if (!userId && userId === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper userId",
+                });
+            } else {
+                const collections = await Collection.find({ _id: userId });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
                 });
             }
         } catch (error) {
