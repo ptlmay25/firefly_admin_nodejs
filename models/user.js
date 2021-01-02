@@ -47,9 +47,7 @@ const UserSchema = new Schema({
     IFSC: {
         type: String
     },
-    joinDate: {
-        type: Date
-    },
+
     DOB: {
         type: Date
     },
