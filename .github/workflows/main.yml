@@ -3,10 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - release
-  issue:
-    branches:
-      - master
+      - [master, release]
 
 jobs:
   build:
