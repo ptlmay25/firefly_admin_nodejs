@@ -9,8 +9,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 
-const port = 5000;
-app.set("port", process.env.port || port);
+const port = process.env.PORT || 5000;
+app.set("port", port);
 
 const routes = require("./routes/api/index");
 app.use("/api", routes);
@@ -29,6 +29,10 @@ app.use('/status', (req,res)=>{
         "status" : "healthy",
         "timestamp" : new Date(),
     })
+})
+
+app.use('/',(req,res)=>{
+    res.send("<h1>Firefly Backend Server</h1>");
 })
 
 //We are running our application on server port : 5000
