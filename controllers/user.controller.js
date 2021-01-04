@@ -142,5 +142,14 @@ class UserController {
             return false;
         }
     }
+    static async userCheck() {
+        var mobileNo = req.params.mobileNo;
+        const checkUser = await Collection.find({ mobileNo: mobileNo });
+        if (checkUser.length === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 module.exports = UserController;
