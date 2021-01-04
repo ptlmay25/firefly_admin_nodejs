@@ -3,7 +3,8 @@ const UserController = require("../../controllers/user.controller");
 
 router.post("/create", UserController.create);
 router.put("/update", UserController.update);
-router.get("/view", UserController.view);
+router.get("/view/:userId", UserController.view);
 router.get("/", UserController.viewAll);
+router.post("/checkUser/:mobileNo", UserController.userCheck)
 
 module.exports = router;
