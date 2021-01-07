@@ -5,6 +5,6 @@ router.post("/create", UserController.create);
 router.put("/update", UserController.update);
 router.get("/view/:userId", UserController.view);
 router.get("/", UserController.viewAll);
-router.post("/checkUser/:mobileNo", UserController.userCheck)
+router.get("/checkUser/:mobileNo", UserController.userCheck)
 
 module.exports = router;
