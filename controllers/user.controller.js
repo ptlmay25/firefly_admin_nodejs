@@ -6,6 +6,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 const Collection = require("../models/user");
+const { query } = require("express");
 
 class UserController {
 
@@ -144,11 +145,6 @@ class UserController {
     static async userCheck(req, res) {
         const mobileNo = req.params.mobileNo;
         const checkUser = await Collection.find({ mobileNo: mobileNo });
-        // if (checkUser.length === 0) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
         return Afterware.sendResponse(req, res, 200, {
             status: "success",
             messageCode: checkUser.length !== 0,
@@ -182,5 +178,21 @@ class UserController {
         }
     }
 
+    static async delete(req, res) {
+        const mobileNo = req.params.mobileNo;
+        try{
+            const deleted = await Collection.deleteOne({ mobileNo: mobileNo });
+            return Afterware.sendResponse(req, res, 200, {
+                status: deleted.ok=="1" ? "success" : "fail",
+                message: deleted.deletedCount,
+            });
+        }
+        catch(error){
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }   
+    }
 }
 module.exports = UserController;
