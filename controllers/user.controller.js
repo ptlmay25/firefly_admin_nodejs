@@ -167,7 +167,7 @@ class UserController {
                     message: "Enter Proper mobileNO",
                 });
             } else {
-                const collections = await Collection.find({ mobileNO: mobileNO });
+                const collections = await Collection.find({ mobileNo: mobileNO });
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
