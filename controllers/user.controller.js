@@ -61,31 +61,12 @@ class UserController {
                     message: "Enter Proper userId",
                 });
             } else {
-                await Collection.updateOne({ _id: userId }, {
-                    username: req.body.username,
-                    gender: req.body.gender,
-                    email: req.body.email,
-                    password: req.body.password,
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    mobileNo: req.body.mobileNo,
-                    homeAddress: req.body.homeAddress,
-                    city: req.body.city,
-                    state: req.body.state,
-                    zipcode: req.body.zipcode,
-                    country: req.body.country,
-                    UPI: req.body.UPI,
-                    bankAccountNo: req.body.bankAccountNo,
-                    IFSC: req.body.IFSC,
-                    DOB: req.body.DOB,
-                    userImg: req.body.userImg,
-                    aadharCardNo: req.body.aadharCardNo,
+                const updated = await Collection.updateOne({ _id: userId }, req.body);
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    message: `${updated.nModified} Documents modified`,
                 });
             }
-            return Afterware.sendResponse(req, res, 200, {
-                status: "success",
-                message: "userloyee Data updated successfully",
-            });
         } catch (error) {
             console.log(error);
             return Afterware.sendResponse(req, res, 500, {
