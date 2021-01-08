@@ -132,7 +132,7 @@ class UserController {
             });
         }
     }
-    
+
     static async userExists(userMobile) {
         const checkUser = await Collection.find({ mobileNo: userMobile });
         if (checkUser.length === 0) {
@@ -141,7 +141,7 @@ class UserController {
             return true;
         }
     }
-    
+
     static async userCheck(req, res) {
         const mobileNo = req.params.mobileNo;
         const checkUser = await Collection.find({ mobileNo: mobileNo });
@@ -180,19 +180,18 @@ class UserController {
 
     static async delete(req, res) {
         const mobileNo = req.params.mobileNo;
-        try{
+        try {
             const deleted = await Collection.deleteOne({ mobileNo: mobileNo });
             return Afterware.sendResponse(req, res, 200, {
-                status: deleted.ok=="1" ? "success" : "fail",
+                status: deleted.ok == "1" ? "success" : "fail",
                 message: deleted.deletedCount,
             });
-        }
-        catch(error){
+        } catch (error) {
             return Afterware.sendResponse(req, res, 500, {
                 status: "error",
                 message: "Internal Server Error",
             });
-        }   
+        }
     }
 }
 module.exports = UserController;
