@@ -160,17 +160,19 @@ class UserController {
 
     static async viewWithMobileNO(req, res) {
         try {
-            const mobileNO = req.params.mobileNO;
-            if (!mobileNO && mobileNO === "") {
+            const mobileNo = req.params.mobileNo;
+            if (!mobileNo && mobileNo === "") {
                 return Afterware.sendResponse(req, res, 400, {
                     status: "Validation Error",
                     message: "Enter Proper mobileNO",
                 });
             } else {
-                const collections = await Collection.find({ mobileNo: mobileNO });
+                const collections = await Collection.find({ mobileNo: mobileNo });
+
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
+
                 });
             }
         } catch (error) {
