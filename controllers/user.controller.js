@@ -142,7 +142,7 @@ class UserController {
             return false;
         }
     }
-    static async userCheck(req,res) {
+    static async userCheck(req, res) {
         const mobileNo = req.params.mobileNo;
         console.log(mobileNo)
         const checkUser = await Collection.find({ mobileNo: mobileNo });
@@ -153,9 +153,34 @@ class UserController {
         // }
         return Afterware.sendResponse(req, res, 200, {
             status: "success",
-            messageCode : checkUser.length !== 0,
-            message: (checkUser.length !== 0)?"Already Exist":"User NOT exist"
+            messageCode: checkUser.length !== 0,
+            message: (checkUser.length !== 0) ? "Already Exist" : "User NOT exist"
         });
     }
+
+    static async viewWithMobileNO(req, res) {
+        try {
+            const mobileNO = req.params.mobileNO;
+            if (!mobileNO && mobileNO === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper mobileNO",
+                });
+            } else {
+                const collections = await Collection.find({ mobileNO: mobileNO });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
 }
 module.exports = UserController;
