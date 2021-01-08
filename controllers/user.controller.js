@@ -11,16 +11,13 @@ class UserController {
 
     static async create(req, res) {
         try {
-
-            const userEmail = req.body.email;
-            if (!(await UserController.userExists(userEmail))) {
+            const userMobile = req.body.mobileNo;
+            if (await UserController.userExists(userMobile)) {
                 return Afterware.sendResponse(req, res, 400, {
                     status: "error",
                     message: "user already Exists",
                 });
             } else {
-
-
                 const collection = new Collection();
                 collection.username = req.body.username;
                 collection.gender = req.body.gender;
@@ -134,17 +131,18 @@ class UserController {
             });
         }
     }
-    static async userExists(userEmail) {
-        const checkUser = await Collection.find({ email: userEmail });
+    
+    static async userExists(userMobile) {
+        const checkUser = await Collection.find({ mobileNo: userMobile });
         if (checkUser.length === 0) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
+    
     static async userCheck(req, res) {
         const mobileNo = req.params.mobileNo;
-        console.log(mobileNo)
         const checkUser = await Collection.find({ mobileNo: mobileNo });
         // if (checkUser.length === 0) {
         //     return true;

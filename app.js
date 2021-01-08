@@ -31,9 +31,9 @@ app.use('/status', (req,res)=>{
     })
 })
 
-app.use('/',(req,res)=>{
-    res.send("<h1>Firefly Backend Server</h1>");
-})
+// app.use('/',(req,res)=>{
+//     res.send("<h1>Firefly Backend Server</h1>");
+// })
 
 //We are running our application on server port : 5000
 app.listen(port, () => {
