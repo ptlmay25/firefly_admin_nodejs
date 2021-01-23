@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const TokenHistorySchema = new Schema({
-    date: {
+    month_year: {
+        type: String,
+    },
+    upload_date: {
         type: String,
     },
     total_revenue:{
