@@ -71,6 +71,11 @@ class TokenHistoryController {
             }
             collection.divident_per_token = divident_per_token
             collection.save();
+
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                message: "new token history collection created successfully",
+            });
         } catch (error) {
             console.log(error);
             return Afterware.sendResponse(req, res, 500, {

@@ -56,6 +56,10 @@ const UserSchema = new Schema({
     },
     aadharCardNo: {
         type: String
+    },
+    acc_bal:{
+        type: Number,
+        default: 20000
     }
 }, {
     versionKey: false,
