@@ -12,8 +12,6 @@ class WithdrawHistoryController {
 
     static async create(req, res) {
         try {
-
-
             const requestNumber = req.body.request_number;
             if (await WithdrawHistoryController.historyExists(requestNumber)) {
                 return Afterware.sendResponse(req, res, 400, {
@@ -58,6 +56,72 @@ class WithdrawHistoryController {
             });
         }
     }
+
+    static async view(req, res) {
+        try {
+            const request_number = req.params.request_number;
+            if (!request_number && request_number === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper request_number",
+                });
+            } else {
+                const collections = await Collection.find({ request_number: request_number });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
+
+    static async update(req, res) {
+        try {
+            const request_number = req.params.request_number;
+            if (!request_number && request_number === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper request_number",
+                });
+            } else {
+                const updated = await Collection.updateOne({ request_number: request_number }, req.body);
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    message: `${updated.nModified} Documents modified`,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
+    static async delete(req, res) {
+        const request_number = req.params.request_number;
+        try {
+            const deleted = await Collection.deleteOne({ request_number: request_number });
+            return Afterware.sendResponse(req, res, 200, {
+                status: deleted.ok == "1" ? "success" : "fail",
+                message: deleted.deletedCount,
+            });
+        } catch (error) {
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
     static async historyExists(requestNumber) {
         const checkUser = await Collection.find({ request_number: requestNumber });
         if (checkUser.length === 0) {
