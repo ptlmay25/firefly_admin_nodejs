@@ -60,6 +60,10 @@ const UserSchema = new Schema({
     acc_bal:{
         type: Number,
         default: 20000
+    },
+    tokens:{
+        type: Number,
+        default: 0
     }
 }, {
     versionKey: false,
