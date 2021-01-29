@@ -12,10 +12,10 @@ class TokenHistoryController {
     static async create(req, res) {
         try {
             const SERVICE_FEE = 0.15
-            const tokenHisory = req.body.tokenHistory;
+            const tokenHistory = req.body.tokenHistory;
             const collection = new Collection();
             
-            if(!tokenHisory.month_year || !tokenHisory.upload_date)
+            if(!tokenHistory.month_year || !tokenHistory.upload_date)
             {
                 return Afterware.sendResponse(req, res, 200, {
                     status: "fail",
@@ -23,13 +23,13 @@ class TokenHistoryController {
                 });
             }
             
-            collection.month_year = tokenHisory.month_year
-            collection.upload_date = tokenHisory.upload_date
+            collection.month_year = tokenHistory.month_year
+            collection.upload_date = tokenHistory.upload_date
 
-            collection.total_revenue = parseInt(tokenHisory.total_revenue, 10)
-            collection.operating_expenses = parseInt(tokenHisory.operating_expenses, 10)
-            collection.interest_and_taxes = parseInt(tokenHisory.interest_and_taxes, 10)
-            collection.total_number_of_tokens = parseInt(tokenHisory.total_number_of_tokens, 10)
+            collection.total_revenue = parseInt(tokenHistory.total_revenue, 10)
+            collection.operating_expenses = parseInt(tokenHistory.operating_expenses, 10)
+            collection.interest_and_taxes = parseInt(tokenHistory.interest_and_taxes, 10)
+            collection.total_number_of_tokens = parseInt(tokenHistory.total_number_of_tokens, 10)
             
             if(isNaN(collection.total_revenue) || 
                 isNaN(collection.operating_expenses) ||
@@ -42,7 +42,7 @@ class TokenHistoryController {
             }
         
             let service_fee = collection.total_revenue*SERVICE_FEE
-            if (service_fee!=parseInt(tokenHisory.service_fee)){
+            if (service_fee!=parseInt(tokenHistory.service_fee)){
                 return Afterware.sendResponse(req, res, 200, {
                     status: "fail",
                     message: "Service Fee Calculation is incorrect.",
@@ -51,7 +51,7 @@ class TokenHistoryController {
             collection.service_fee = service_fee
 
             let net_profit = collection.total_revenue - collection.operating_expenses - collection.interest_and_taxes - collection.service_fee
-            if (net_profit<0 || net_profit!=parseInt(tokenHisory.net_profit)){
+            if (net_profit<0 || net_profit!=parseInt(tokenHistory.net_profit)){
                 return Afterware.sendResponse(req, res, 200, {
                     status: "fail",
                     message: "Net Profit Calculation is incorrect.",
@@ -63,7 +63,7 @@ class TokenHistoryController {
             if(collection.total_number_of_tokens>0){
                 divident_per_token = collection.net_profit/collection.total_number_of_tokens;
             }
-            if (divident_per_token!=parseInt(tokenHisory.divident_per_token)){
+            if (divident_per_token!=parseInt(tokenHistory.divident_per_token)){
                 return Afterware.sendResponse(req, res, 200, {
                     status: "fail",
                     message: "Divident/token Calculation is incorrect.",
