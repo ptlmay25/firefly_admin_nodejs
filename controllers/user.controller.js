@@ -6,11 +6,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 const Collection = require("../models/user");
+const { collection } = require("../models/user");
 
 class UserController {
 
     static async create(req, res) {
         try {
+
+
             const userMobile = req.body.mobileNo;
             if (await UserController.userExists(userMobile)) {
                 return Afterware.sendResponse(req, res, 400, {

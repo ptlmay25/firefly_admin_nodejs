@@ -1,7 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+
 const UserSchema = new Schema({
+    id: {
+        type: Number,
+        $inc: {
+            id: 1
+        },
+    },
     username: {
         type: String,
     },

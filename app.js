@@ -24,10 +24,10 @@ mongoose
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log(err));
 
-app.use('/status', (req,res)=>{
+app.use('/status', (req, res) => {
     res.json({
-        "status" : "healthy",
-        "timestamp" : new Date(),
+        "status": "healthy",
+        "timestamp": new Date(),
     })
 })
 
