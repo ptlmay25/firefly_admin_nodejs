@@ -13,7 +13,7 @@ class DividendHistoryController {
         try {
             const dividendHistory = req.body.dividendHistory;
             const collection = new Collection();
-            
+
             collection.date = new Date(dividendHistory.date)
             collection.dividend_id = parseInt(dividendHistory.dividend_id, 10)
             collection.user_id = dividendHistory.user_id
@@ -22,13 +22,13 @@ class DividendHistoryController {
             collection.divident_per_token = parseInt(dividendHistory.divident_per_token, 10)
             collection.total_amount = parseInt(dividendHistory.total_amount, 10)
 
-            if(isNaN(collection.total_amount) || 
+            if (isNaN(collection.total_amount) ||
                 isNaN(collection.dividend_id) ||
-                isNaN(collection.total_value) || 
-                isNaN(collection.num_of_tokens) || 
+                isNaN(collection.total_value) ||
+                isNaN(collection.num_of_tokens) ||
                 isNaN(collection.dividend_per_token) ||
                 isNaN(collection.total_amount) ||
-                (collection.num_of_tokens*collection.dividend_per_token!=collection.total_amount)){
+                (collection.num_of_tokens * collection.dividend_per_token != collection.total_amount)) {
                 return Afterware.sendResponse(req, res, 200, {
                     status: "fail",
                     message: "Please provide proper numeric types.",
@@ -48,7 +48,7 @@ class DividendHistoryController {
             });
         }
     }
-    
+
     static async viewAll(req, res) {
         try {
             const collections = await Collection.find({});
