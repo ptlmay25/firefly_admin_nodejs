@@ -14,7 +14,7 @@ class ContactController {
 
             const collection = new Collection();
 
-            collection.date = new Date(Contact.date)
+            // collection.date = new Date(Contact.date)
             collection.BankAccountNumber = req.body.BankAccountNumber;
             collection.name = req.body.name;
             collection.email = req.body.email;
