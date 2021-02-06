@@ -5,6 +5,9 @@ const withdrawRequestSchema = new Schema({
     userId: {
         type: String,
     },
+    request_No: {
+        type: String,
+    },
     name: {
         type: String,
     },
