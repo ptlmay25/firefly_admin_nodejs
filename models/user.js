@@ -3,12 +3,6 @@ const Schema = mongoose.Schema;
 
 
 const UserSchema = new Schema({
-    id: {
-        type: Number,
-        $inc: {
-            id: 1
-        },
-    },
     username: {
         type: String,
     },
@@ -64,11 +58,11 @@ const UserSchema = new Schema({
     aadharCardNo: {
         type: String
     },
-    acc_bal:{
+    acc_bal: {
         type: Number,
         default: 20000
     },
-    tokens:{
+    tokens: {
         type: Number,
         default: 0
     }
