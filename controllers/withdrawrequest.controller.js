@@ -20,7 +20,7 @@ class WithdrawRequestController {
                 });
             } else {
                 const collection = new Collection();
-                collection.request_No = req.body.request_No
+                // collection.request_No = req.body.request_No
                 collection.userId = req.body.userId;
                 collection.name = req.body.name;
                 collection.UPI = req.body.UPI;
@@ -67,7 +67,7 @@ class WithdrawRequestController {
                     message: "Enter Proper request_No",
                 });
             } else {
-                const collections = await Collection.find({ request_No: request_No });
+                const collections = await Collection.find({ _id: request_No });
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
@@ -92,7 +92,7 @@ class WithdrawRequestController {
                     message: "Enter Proper request_No",
                 });
             } else {
-                const updated = await Collection.updateOne({ request_No: request_No }, req.body);
+                const updated = await Collection.updateOne({ _id: request_No }, req.body);
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     message: `${updated.nModified} Documents modified`,
@@ -110,7 +110,7 @@ class WithdrawRequestController {
     static async delete(req, res) {
         const request_No = req.params.request_No;
         try {
-            const deleted = await Collection.deleteOne({ request_No: request_No });
+            const deleted = await Collection.deleteOne({ _id: request_No });
             return Afterware.sendResponse(req, res, 200, {
                 status: deleted.ok == "1" ? "success" : "fail",
                 message: deleted.deletedCount,
@@ -124,7 +124,7 @@ class WithdrawRequestController {
     }
 
     static async requestExists(request_No) {
-        const checkUser = await Collection.find({ request_No: request_No });
+        const checkUser = await Collection.find({ _id: request_No });
         if (checkUser.length === 0) {
             return false;
         } else {
