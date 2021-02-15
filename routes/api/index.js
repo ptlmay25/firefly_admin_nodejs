@@ -7,6 +7,7 @@ const withdrawHistory = require('./withdrawHistory');
 const withdrawRequest = require('./withdrawrequest');
 const dividendHistory = require("./dividendHistory");
 const contact = require("./contact");
+const dashboard = require("./dashboard");
 
 router.use('/user', user);
 router.use('/token', tokenHistory);
@@ -16,4 +17,6 @@ router.use('/withdrawHistory', withdrawHistory);
 router.use('/withdrawRequest', withdrawRequest);
 router.use('/dividendHistory', dividendHistory);
 router.use('/contact', contact);
+router.use('/dashboard', dashboard);
+
 module.exports = router;
