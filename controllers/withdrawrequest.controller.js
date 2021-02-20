@@ -14,6 +14,9 @@ class WithdrawRequestController {
         try {
             const request_No = req.body.request_No;
             if (await WithdrawRequestController.requestExists(request_No)) {
+
+
+
                 return Afterware.sendResponse(req, res, 400, {
                     status: "error",
                     message: "Withdraw request already Exists",
@@ -123,14 +126,40 @@ class WithdrawRequestController {
         }
     }
 
-    static async requestExists(request_No) {
-        const checkUser = await Collection.find({ _id: request_No });
-        if (checkUser.length === 0) {
-            return false;
-        } else {
-            return true;
+
+    static async viewUserRequests(req, res) {
+        try {
+            const userId = req.params.userId;
+            if (!userId && userId === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper user",
+                });
+            } else {
+                const collections = await Collection.find({ userId: userId });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
         }
     }
+
+
+    // static async requestExists(request_No) {
+    //     const checkUser = await Collection.find({ _id: request_No });
+    //     if (checkUser.length === 0) {
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // }
 
 
 

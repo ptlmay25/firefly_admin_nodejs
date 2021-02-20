@@ -20,6 +20,13 @@ const withdrawHistorySchema = new Schema({
     total_amount: {
         type: Number,
     },
+    status: {
+        type: Boolean,
+    },
+    userId: {
+        type: String,
+    },
+
 
 }, {
     versionKey: false,

@@ -59,7 +59,7 @@ class WithdrawHistoryController {
 
     static async view(req, res) {
         try {
-            const request_number = req.params.request_number;
+            const request_number = req.params.userId;
             if (!request_number && request_number === "") {
                 return Afterware.sendResponse(req, res, 400, {
                     status: "Validation Error",
@@ -130,6 +130,32 @@ class WithdrawHistoryController {
             return true;
         }
     }
+
+    static async StatusCheck(requestNumber) {
+
+        // const checkUser = await Collection.find({ request_number: requestNumber });
+        if (user.accountBal > req.body.withDrawal_Amount) {
+            await user.collection.updateOne({ accountBal: (user.accountBal - req.body.withDrawal_Amount) });
+            await withdarawHistory.collection.updateOne({ status: 1 });
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                message: "request is completed money is withdrawed",
+            });
+        } else {
+
+            await withdarawHistory.collection.updateOne({ status: 0 });
+            return Afterware.sendResponse(req, res, 400, {
+                status: "fail",
+                message: "request is failed , not sufficient balance",
+            });
+        }
+
+    }
+
+
+
+
+
 
 
 
