@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const user = require('./user');
-const tokenHistory = require('./tokenhistory');
+const tokenHistory = require('./token');
 const purchaseHistory = require("./purchaseHistory");
 const sellHistory = require("./sellHistory")
 const withdrawHistory = require('./withdrawHistory');

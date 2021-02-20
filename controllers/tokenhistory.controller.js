@@ -1,76 +1,56 @@
 const Afterware = require("../lib/afterware");
-const bodyParser = require("body-parser");
-const express = require("express");
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+const token = require("../models/token");
 const Collection = require("../models/token");
+const UserController = require("./user.controller");
 
 class TokenHistoryController {
 
     static async create(req, res) {
         try {
             const SERVICE_FEE = 0.15
-            const tokenHistory = req.body.tokenHistory;
-            const collection = new Collection();
-
-            if (!tokenHistory.month_year || !tokenHistory.upload_date) {
+            const tokenHistory = req.body.data;
+            
+            // check all required fields
+            const validated = await TokenHistoryController.validate(tokenHistory)
+            if (!validated)
+            {
                 return Afterware.sendResponse(req, res, 200, {
-                    status: "fail",
-                    message: "Please provide month_year and upload date both.",
+                    status: "error",
+                    message: "provide all required fields with correct datatype.",
+                });
+            }
+            
+            for(key in ["total_revenue","operating_expenses","interest_and_taxes","service_fee","net_profit"])
+            {
+                tokenHistory[key] = parseInt(tokenHistory[key],10)
+                if(tokenHistory[key] == NaN){
+                    tokenHistory[key] = 0
+                }
+            }
+
+            // validating
+            if(
+                tokenHistory["total_revenue"]<=0 ||
+                tokenHistory["operating_expenses"]<=0 ||
+                tokenHistory["interest_and_taxes"]<=0 ||
+                tokenHistory["service_fee"]<=0 ||
+                tokenHistory["net_profit"]<=0 ||
+                tokenHistory["service_fee"] != SERVICE_FEE*tokenHistory["total_revenue"] || 
+                tokenHistory["net_profit"] != (tokenHistory["total_revenue"] - tokenHistory["operating_expenses"] - tokenHistory["interest_and_taxes"] - tokenHistory["service_fee"])
+            )
+            {
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "error",
+                    message: "calculation error. Please try with correct values.",
                 });
             }
 
-            collection.month_year = tokenHistory.month_year
-            collection.upload_date = tokenHistory.upload_date
+            const token_price = TokenHistoryController.getLatestTokenPrice();
+            const total_number_of_tokens = TokenHistoryController.getTotalNumberOfTokens();
 
-            collection.total_revenue = parseInt(tokenHistory.total_revenue, 10)
-            collection.operating_expenses = parseInt(tokenHistory.operating_expenses, 10)
-            collection.interest_and_taxes = parseInt(tokenHistory.interest_and_taxes, 10)
-            collection.total_number_of_tokens = parseInt(tokenHistory.total_number_of_tokens, 10)
-
-            if (isNaN(collection.total_revenue) ||
-                isNaN(collection.operating_expenses) ||
-                isNaN(collection.interest_and_taxes) ||
-                isNaN(collection.total_number_of_tokens)) {
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "fail",
-                    message: "Please provide proper numeric types.",
-                });
-            }
-
-            let service_fee = collection.total_revenue * SERVICE_FEE
-            if (service_fee != parseInt(tokenHistory.service_fee)) {
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "fail",
-                    message: "Service Fee Calculation is incorrect.",
-                });
-            }
-            collection.service_fee = service_fee
-
-            let net_profit = collection.total_revenue - collection.operating_expenses - collection.interest_and_taxes - collection.service_fee
-            if (net_profit < 0 || net_profit != parseInt(tokenHistory.net_profit)) {
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "fail",
-                    message: "Net Profit Calculation is incorrect.",
-                });
-            }
-            collection.net_profit = net_profit
-
-            let divident_per_token = 0
-            if (collection.total_number_of_tokens > 0) {
-                divident_per_token = collection.net_profit / collection.total_number_of_tokens;
-            }
-            if (divident_per_token != parseInt(tokenHistory.divident_per_token)) {
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "fail",
-                    message: "Divident/token Calculation is incorrect.",
-                });
-            }
-            collection.divident_per_token = divident_per_token
-            collection.save();
-
+            
+            const collection = new Collection(tokenHistory);
+            
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 message: "new token history collection created successfully",
@@ -80,6 +60,7 @@ class TokenHistoryController {
             return Afterware.sendResponse(req, res, 500, {
                 status: "error",
                 message: "Internal Server Error",
+                messageDetails: error
             });
         }
     }
@@ -98,6 +79,25 @@ class TokenHistoryController {
                 message: "Internal Server Error",
             });
         }
+    }
+
+    static async delete(req,res){
+
+    }
+
+    static async update(req,res){
+
+    }
+
+    static async getLatestTokenPrice(req,res){
+
+    }
+
+    static async validate(data){
+        const requiredFields = ["total_revenue","operating_expenses","interest_and_taxes","service_fee","net_profit"]
+        const validated = requiredFields.every(key=>key in data)
+        console.log(validated)
+        return validated
     }
 }
 
