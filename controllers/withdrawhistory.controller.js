@@ -6,7 +6,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 const Collection = require("../models/withdraw_history");
-const { collection } = require("../models/withdraw_history");
+const UserCollection = require("../models/user");
+// const { collection } = require("../models/withdraw_history");
 
 class WithdrawHistoryController {
 
@@ -124,19 +125,28 @@ class WithdrawHistoryController {
         }
     }
 
-    static async StatusCheck(requestNumber) {
 
-        // const checkUser = await Collection.find({ request_number: requestNumber });
+    /* 
+    It will find user's account balance check withdraw_request_amount according to that it will set status in withdrawhistory 
+    true or false
+    */
+    static async StatusCheck(req, res) {
+
+        const userId = req.params.userId;
+        const request_No = req.params.request_No;
+
+
+        const user = await UserCollection.find({ _id: userId });
+
         if (user.accountBal > req.body.withDrawal_Amount) {
-            await user.collection.updateOne({ accountBal: (user.accountBal - req.body.withDrawal_Amount) });
-            await withdarawHistory.collection.updateOne({ status: 1 });
+            await user.UserCollection.updateOne({ accountBal: (user.accountBal - req.body.withDrawal_Amount) });
+            await withdarawHistory.collection.updateOne({ _id: request_No }, { status: true });
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 message: "request is completed money is withdrawed",
             });
         } else {
-
-            await withdarawHistory.collection.updateOne({ status: 0 });
+            await withdarawHistory.collection.updateOne({ _id: request_No }, { status: false });
             return Afterware.sendResponse(req, res, 400, {
                 status: "fail",
                 message: "request is failed , not sufficient balance",
