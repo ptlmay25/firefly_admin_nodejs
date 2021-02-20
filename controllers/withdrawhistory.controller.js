@@ -12,27 +12,20 @@ class WithdrawHistoryController {
 
     static async create(req, res) {
         try {
-            const requestNumber = req.body.request_number;
-            if (await WithdrawHistoryController.historyExists(requestNumber)) {
-                return Afterware.sendResponse(req, res, 400, {
-                    status: "error",
-                    message: "Withdraw history already Exists",
-                });
-            } else {
-                const collection = new Collection();
-                collection.request_number = req.body.request_number;
-                collection.name = req.body.name;
-                collection.UPI = req.body.UPI;
-                collection.BankAccountNumber = req.body.BankAccountNumber;
-                collection.IFSC = req.body.IFSC;
-                collection.total_amount = req.body.total_amount;
 
-                collection.save();
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "success",
-                    message: "new withdraw history collection created successfully",
-                });
-            }
+            const collection = new Collection();
+
+            collection.name = req.body.name;
+            collection.UPI = req.body.UPI;
+            collection.BankAccountNumber = req.body.BankAccountNumber;
+            collection.IFSC = req.body.IFSC;
+            collection.total_amount = req.body.total_amount;
+
+            collection.save();
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                message: "new withdraw history collection created successfully",
+            });
         } catch (error) {
             console.log(error);
             return Afterware.sendResponse(req, res, 500, {
@@ -66,7 +59,7 @@ class WithdrawHistoryController {
                     message: "Enter Proper request_number",
                 });
             } else {
-                const collections = await Collection.find({ request_number: request_number });
+                const collections = await Collection.find({ _id: request_number });
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
@@ -91,7 +84,7 @@ class WithdrawHistoryController {
                     message: "Enter Proper request_number",
                 });
             } else {
-                const updated = await Collection.updateOne({ request_number: request_number }, req.body);
+                const updated = await Collection.updateOne({ _id: request_number }, req.body);
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     message: `${updated.nModified} Documents modified`,
@@ -109,7 +102,7 @@ class WithdrawHistoryController {
     static async delete(req, res) {
         const request_number = req.params.request_number;
         try {
-            const deleted = await Collection.deleteOne({ request_number: request_number });
+            const deleted = await Collection.deleteOne({ _id: request_number });
             return Afterware.sendResponse(req, res, 200, {
                 status: deleted.ok == "1" ? "success" : "fail",
                 message: deleted.deletedCount,
@@ -123,7 +116,7 @@ class WithdrawHistoryController {
     }
 
     static async historyExists(requestNumber) {
-        const checkUser = await Collection.find({ request_number: requestNumber });
+        const checkUser = await Collection.find({ _id: requestNumber });
         if (checkUser.length === 0) {
             return false;
         } else {
@@ -150,6 +143,30 @@ class WithdrawHistoryController {
             });
         }
 
+    }
+
+    static async viewUserHistory(req, res) {
+        try {
+            const userId = req.params.userId;
+            if (!userId && userId === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper User",
+                });
+            } else {
+                const collections = await Collection.find({ userId: userId });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
     }
 
 

@@ -12,31 +12,21 @@ class WithdrawRequestController {
 
     static async create(req, res) {
         try {
-            const request_No = req.body.request_No;
-            if (await WithdrawRequestController.requestExists(request_No)) {
+            const collection = new Collection();
+            // collection.request_No = req.body.request_No
+            collection.userId = req.body.userId;
+            collection.name = req.body.name;
+            collection.UPI = req.body.UPI;
+            collection.BankAccountNumber = req.body.BankAccountNumber;
+            collection.IFSC = req.body.IFSC;
+            collection.total_amount = req.body.total_amount;
 
+            collection.save();
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                message: "new withdraw request collection created successfully",
+            });
 
-
-                return Afterware.sendResponse(req, res, 400, {
-                    status: "error",
-                    message: "Withdraw request already Exists",
-                });
-            } else {
-                const collection = new Collection();
-                // collection.request_No = req.body.request_No
-                collection.userId = req.body.userId;
-                collection.name = req.body.name;
-                collection.UPI = req.body.UPI;
-                collection.BankAccountNumber = req.body.BankAccountNumber;
-                collection.IFSC = req.body.IFSC;
-                collection.total_amount = req.body.total_amount;
-
-                collection.save();
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "success",
-                    message: "new withdraw request collection created successfully",
-                });
-            }
         } catch (error) {
             console.log(error);
             return Afterware.sendResponse(req, res, 500, {
