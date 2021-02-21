@@ -24,10 +24,11 @@ class SellHistoryController {
             const num_of_tokens = sellHistory.num_of_tokens || 1;                       
 
             const collection = new Collection({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price})
-            await collection.save()
+            let savedDoc = await collection.save()
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 message: "new sell history collection created successfully",
+                data: savedDoc
             });
         } catch (error) {
             console.log(error);
