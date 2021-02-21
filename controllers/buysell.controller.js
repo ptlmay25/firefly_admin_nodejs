@@ -9,6 +9,10 @@ class BuySellController {
     static async buy(req, res) {
         try {
             // Buy tokens
+            // will get userid and token
+            // validate
+            // add in pur history
+            // udpate user 
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: savedDoc,
