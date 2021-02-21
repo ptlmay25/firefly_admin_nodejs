@@ -1,7 +1,9 @@
 const router = require("express").Router();
-const SellHistoryController = require("../../controllers/sellHistory.controller");
+const Controller = require("../../controllers/sellHistory.controller");
 
-router.post("/add",SellHistoryController.create);
-router.get("/",SellHistoryController.viewAll)
+router.post("/add",Controller.create);
+router.get("/",Controller.viewAll)
+router.put("/update/:id", Controller.update);
+router.delete("/delete/:id", Controller.delete);
 
 module.exports = router;

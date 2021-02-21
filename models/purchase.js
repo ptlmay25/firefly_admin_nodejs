@@ -23,7 +23,7 @@ const purchaseHistorySchema = new Schema({
     },
     status:{
         type: String,
-        default: 'Pending'
+        default: 'Completed'
     }
 }, {
     versionKey: false,

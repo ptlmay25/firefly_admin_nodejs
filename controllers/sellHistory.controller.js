@@ -62,16 +62,32 @@ class SellHistoryController {
         }
     }
 
-    static async update(req, res) {
+    static async delete(req,res){
+        const id = req.params.id;
         try {
-            const sell_id = req.params.sell_id;
-            if (!sell_id && sell_id === "") {
+            const deleted = await Collection.deleteOne({ _id: id });
+            return Afterware.sendResponse(req, res, 200, {
+                status: deleted.ok == "1" ? "success" : "fail",
+                message: deleted.deletedCount,
+            });
+        } catch (error) {
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
+    static async update(req,res){
+        try {
+            const id = req.params.id;
+            if (!id && id === "") {
                 return Afterware.sendResponse(req, res, 400, {
                     status: "Validation Error",
-                    message: "Enter Proper sell_id",
+                    message: "Enter Proper input",
                 });
             } else {
-                const updated = await Collection.updateOne({ sell_id: sell_id }, req.body);
+                const updated = await Collection.updateOne({ _id: id }, req.body);
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     message: `${updated.nModified} Documents modified`,

@@ -23,7 +23,7 @@ const sellHistorySchema = new Schema({
     },
     status:{
         type: String,
-        default: 'Pending'
+        default: 'Completed'
     }
 }, {
     versionKey: false,

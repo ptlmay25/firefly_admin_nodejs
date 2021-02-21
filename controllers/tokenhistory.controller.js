@@ -115,9 +115,9 @@ class TokenHistoryController {
     }
 
     static async delete(req,res){
-        const tokenId = req.params.id;
+        const id = req.params.id;
         try {
-            const deleted = await Collection.deleteOne({ _id: tokenId });
+            const deleted = await Collection.deleteOne({ _id: id });
             return Afterware.sendResponse(req, res, 200, {
                 status: deleted.ok == "1" ? "success" : "fail",
                 message: deleted.deletedCount,
@@ -132,14 +132,14 @@ class TokenHistoryController {
 
     static async update(req,res){
         try {
-            const userId = req.params.id;
-            if (!userId && userId === "") {
+            const id = req.params.id;
+            if (!id && id === "") {
                 return Afterware.sendResponse(req, res, 400, {
                     status: "Validation Error",
                     message: "Enter Proper input",
                 });
             } else {
-                const updated = await Collection.updateOne({ _id: userId }, req.body);
+                const updated = await Collection.updateOne({ _id: id }, req.body);
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     message: `${updated.nModified} Documents modified`,
