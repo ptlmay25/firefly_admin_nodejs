@@ -5,8 +5,6 @@ const UserController = require("./user.controller");
 
 class TokenHistoryController {
 
-    static DEFAULT_PRICE = 10000;
-
     static async create(req, res) {
         try {
             const SERVICE_FEE = 0.15
@@ -178,9 +176,10 @@ class TokenHistoryController {
     }
 
     static async _getLatestTokenPrice(){
+        const DEFAULT_PRICE = 10000;
         let latestPrice = {
             token_date: null,
-            token_price: TokenHistoryController.DEFAULT_PRICE
+            token_price: DEFAULT_PRICE
         }
         try{
             const latestPriceArray =  await Collection.find().sort({token_date: -1, token_price: -1}).limit(1);
@@ -190,7 +189,7 @@ class TokenHistoryController {
             }
             if(latestPrice.token_price==undefined || latestPrice.token_price==0)
             {
-                latestPrice.token_price = TokenHistoryController.DEFAULT_PRICE;
+                latestPrice.token_price = DEFAULT_PRICE;
             }
             return latestPrice
         }
@@ -198,7 +197,7 @@ class TokenHistoryController {
             console.log(error)
             return {
                 token_date: null,
-                token_price: TokenHistoryController.DEFAULT_PRICE
+                token_price: DEFAULT_PRICE
             }
         };
     }
