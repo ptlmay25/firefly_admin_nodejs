@@ -4,26 +4,25 @@ const Schema = mongoose.Schema;
 const sellHistorySchema = new Schema({
     date: {
         type: Date,
+        required: true,
+        default: Date.now,
     },
-    sell_id:{
-        type: Number,
-        default: 11000,
-    },
-    user_acc_num:{
-        type: Number
+    user_id:{
+        type: String,
+        required: true
     },
     num_of_tokens:{
-        type: Number
+        type: Number,
+        required: true
     },
     token_price:{
-        type: Number
-    },
-    total_price:{
-        type: Number
+        type: Number,
+        required: true
     },
     status:{
         type: String,
-        default: 'Pending'
+        required: true,
+        default: 'Fulfilled'
     }
 }, {
     versionKey: false,

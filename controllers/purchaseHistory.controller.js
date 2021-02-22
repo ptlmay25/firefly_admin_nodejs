@@ -1,41 +1,34 @@
 const Afterware = require("../lib/afterware");
-const bodyParser = require("body-parser");
-const express = require("express");
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
 const Collection = require("../models/purchase");
+const User = require("../models/user")
+const TokenHistoryController = require("../controllers/tokenhistory.controller")
 
 class PurchaseHistoryController {
 
     static async create(req, res) {
         try {
             const purchaseHistory = req.body.purchaseHistory;
-            const collection = new Collection();
             
-            collection.date = new Date(purchaseHistory.date)
-            collection.pur_id = parseInt(purchaseHistory.pur_id, 10)
-            collection.user_acc_num = parseInt(purchaseHistory.user_acc_num, 10)
-            collection.num_of_tokens = parseInt(purchaseHistory.num_of_tokens, 10)
-            collection.token_price = parseInt(purchaseHistory.token_price, 10)
-            collection.total_price = parseInt(purchaseHistory.total_price, 10)
-
-            if(isNaN(collection.total_revenue) || 
-                isNaN(collection.operating_expenses) ||
-                isNaN(collection.interest_and_taxes) || 
-                isNaN(collection.total_number_of_tokens) ||
-                (collection.num_of_tokens*collection.token_price!=collection.token_price)){
+            const user_id = purchaseHistory.user_id || "";
+            const users = (await User.find({_id:user_id}))
+            if(users.length != 1)
+            {
                 return Afterware.sendResponse(req, res, 200, {
                     status: "fail",
-                    message: "Please provide proper numeric types.",
+                    message: "User Not Exists",
                 });
             }
-            collection.save();
+            user_id = users[0]._id;
 
+            const token_price = (await TokenHistoryController._getLatestTokenPrice()).token_price
+            const num_of_tokens = purchaseHistory.num_of_tokens || 1;                       
+
+            const collection = new Collection({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price})
+            let savedDoc = await collection.save()
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 message: "new purchase history collection created successfully",
+                data: savedDoc
             });
         } catch (error) {
             console.log(error);
@@ -62,16 +55,32 @@ class PurchaseHistoryController {
         }
     }
 
-    static async update(req, res) {
+    static async delete(req,res){
+        const id = req.params.id;
         try {
-            const pur_id = req.params.pur_id;
-            if (!pur_id && pur_id === "") {
+            const deleted = await Collection.deleteOne({ _id: id });
+            return Afterware.sendResponse(req, res, 200, {
+                status: deleted.ok == "1" ? "success" : "fail",
+                message: deleted.deletedCount,
+            });
+        } catch (error) {
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
+    static async update(req,res){
+        try {
+            const id = req.params.id;
+            if (!id && id === "") {
                 return Afterware.sendResponse(req, res, 400, {
                     status: "Validation Error",
-                    message: "Enter Proper pur_id",
+                    message: "Enter Proper input",
                 });
             } else {
-                const updated = await Collection.updateOne({ pur_id: pur_id }, req.body);
+                const updated = await Collection.updateOne({ _id: id }, req.body);
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     message: `${updated.nModified} Documents modified`,
