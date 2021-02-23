@@ -1,6 +1,6 @@
 const Afterware = require("../lib/afterware");
 const Collection = require("../models/deposit");
-const User = require("../models/deposit")
+const User = require("../models/user")
 
 class DepositHistoryController {
 
@@ -9,6 +9,7 @@ class DepositHistoryController {
             const depositHistory = req.body.depositHistory;
             
             const user_id = depositHistory.user_id || "";
+            const total_amount = parseInt(depositHistory.total_amount,10) || 0
             const users = (await User.find({_id:user_id}))
             if(users.length != 1)
             {
@@ -17,8 +18,11 @@ class DepositHistoryController {
                     message: "User Not Exists",
                 });
             }
-            user_id = users[0]._id;
-            depositHistory.user_id = user_id;
+            let user = users[0]
+            depositHistory.user_id = user._id;
+
+            user.acc_bal = user.acc_bal - total_amount;
+            user.save();
 
             const collection = new Collection(depositHistory)
             let savedDoc = await collection.save()
