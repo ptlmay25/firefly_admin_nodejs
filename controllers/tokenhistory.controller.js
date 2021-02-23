@@ -98,7 +98,7 @@ class TokenHistoryController {
 
     static async viewAll(req, res) {
         try {
-            const collections = await Collection.find({});
+            const collections = await Collection.find({}).sort({token_date: -1});
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: collections,
