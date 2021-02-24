@@ -26,8 +26,11 @@ const withdrawHistorySchema = new Schema({
     userId: {
         type: String,
     },
-
-
+    date:{
+        type: Date,
+        required: true,
+        default: Date.now,
+    }
 }, {
     versionKey: false,
     timestamps: true,
