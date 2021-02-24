@@ -21,7 +21,7 @@ class DepositHistoryController {
             let user = users[0]
             depositHistory.user_id = user._id;
 
-            user.acc_bal = user.acc_bal - total_amount;
+            user.acc_bal = user.acc_bal + total_amount;
             user.save();
 
             const collection = new Collection(depositHistory)
