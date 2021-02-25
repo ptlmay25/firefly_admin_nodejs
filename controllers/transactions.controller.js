@@ -76,6 +76,75 @@ class TransactionHistoryController {
         }
     }
 
+    static async view(req, res) {
+        try {
+            const user_id = req.params.user_id;
+
+            const withdraws = await Withdraw.find({userId:user_id}).sort({date: -1});
+            const deposits = await Deposit.find({user_id:user_id}).sort({date: -1});
+            const purchases = await Purchase.find({user_id:user_id}).sort({date: -1});
+            const sells = await Sell.find({user_id:user_id}).sort({date: -1});
+
+            all_transactions = []
+            for(withdraw in withdraws)
+            {
+                all_transactions.push({
+                    type: "Withdraw",
+                    date: withdraw.date,
+                    user_id: withdraw.userId,
+                    amount: withdraw.total_amount,
+                })
+            }
+            for(deposit in deposits)
+            {
+                all_transactions.push({
+                    type: "Add Funds",
+                    date: deposit.date,
+                    user_id: deposit.user_id,
+                    amount: deposit.total_amount,
+                })
+            }
+            for(purchase in purchases)
+            {
+                all_transactions.push({
+                    type: "Token Buy",
+                    date: purchase.date,
+                    user_id: purchase.user_id,
+                    amount: purchase.num_of_tokens*purchase.token_price,
+                    token_price: purchase.token_price,
+                    number_of_tokens: purchase.number_of_tokens,
+                })
+            }
+            for(sell in sells)
+            {
+                all_transactions.push({
+                    type: "Token Sell",
+                    date: sell.date,
+                    user_id: sell.user_id,
+                    amount: sell.num_of_tokens*sell.token_price,
+                    token_price: sell.token_price,
+                    number_of_tokens: sell.number_of_tokens,
+                })
+            }
+
+            all_transactions = all_transactions.sort((d1, d2)=>{
+                if (d1.date < d2.date) return -1;
+                if (d1.date > d2.date) return 1;
+                return 0;
+            });
+
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                data: all_transactions,
+            });
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
 }
 
 module.exports = TransactionHistoryController;
