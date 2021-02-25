@@ -26,7 +26,7 @@ class BuySellController {
             const num_of_tokens = data.num_of_tokens || 1;
 
             const payment_token = data.payment_token || ""
-            if(payment_token!="")
+            if(payment_token=="")
             {
                 if(num_of_tokens*token_price > user.acc_bal)
                 {
