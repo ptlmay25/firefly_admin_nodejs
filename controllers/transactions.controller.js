@@ -19,7 +19,7 @@ class TransactionHistoryController {
             for(withdraw in withdraws)
             {
                 all_transactions.push({
-                    type: "withdraw",
+                    type: "Withdraw",
                     date: withdraw.date,
                     user_id: withdraw.userId,
                     amount: withdraw.total_amount,
@@ -28,7 +28,7 @@ class TransactionHistoryController {
             for(deposit in deposits)
             {
                 all_transactions.push({
-                    type: "deposit",
+                    type: "Add Funds",
                     date: deposit.date,
                     user_id: deposit.user_id,
                     amount: deposit.total_amount,
@@ -37,7 +37,7 @@ class TransactionHistoryController {
             for(purchase in purchases)
             {
                 all_transactions.push({
-                    type: "purchase",
+                    type: "Token Buy",
                     date: purchase.date,
                     user_id: purchase.user_id,
                     amount: purchase.num_of_tokens*purchase.token_price,
@@ -48,7 +48,7 @@ class TransactionHistoryController {
             for(sell in sells)
             {
                 all_transactions.push({
-                    type: "sell",
+                    type: "Token Sell",
                     date: sell.date,
                     user_id: sell.user_id,
                     amount: sell.num_of_tokens*sell.token_price,
@@ -57,10 +57,15 @@ class TransactionHistoryController {
                 })
             }
 
-            return all_transactions.sort((d1, d2)=>{
+            all_transactions = all_transactions.sort((d1, d2)=>{
                 if (d1.date < d2.date) return -1;
                 if (d1.date > d2.date) return 1;
                 return 0;
+            });
+
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                data: all_transactions,
             });
         } catch (error) {
             console.log(error);

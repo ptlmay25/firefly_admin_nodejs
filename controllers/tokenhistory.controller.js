@@ -7,20 +7,19 @@ class TokenHistoryController {
 
     static async create(req, res) {
         try {
-            const SERVICE_FEE = 0.15
             const tokenHistory = req.body.data;
             
             // check all required fields
             const validated = await TokenHistoryController.validate(tokenHistory)
             if (!validated)
             {
-                return Afterware.sendResponse(req, res, 200, {
+                return Afterware.sendResponse(req, res, 500, {
                     status: "error",
                     message: "provide all required fields with correct datatype.",
                 });
             }
             
-            for(let key in ["total_revenue","operating_expenses","interest_and_taxes","service_fee","net_profit"])
+            for(let key in ["total_revenue","operating_expenses","interest_and_taxes","net_profit"])
             {
                 tokenHistory[key] = parseInt(tokenHistory[key],10)
                 if(tokenHistory[key] == NaN){
@@ -33,13 +32,11 @@ class TokenHistoryController {
                 tokenHistory["total_revenue"]<0 ||
                 tokenHistory["operating_expenses"]<0 ||
                 tokenHistory["interest_and_taxes"]<0 ||
-                tokenHistory["service_fee"]<0 ||
-                tokenHistory["net_profit"]<0 ||
-                tokenHistory["service_fee"] != SERVICE_FEE*tokenHistory["total_revenue"] || 
-                tokenHistory["net_profit"] != (tokenHistory["total_revenue"] - tokenHistory["operating_expenses"] - tokenHistory["interest_and_taxes"] - tokenHistory["service_fee"])
+                tokenHistory["net_profit"]<0 || 
+                tokenHistory["net_profit"] != (0.5*(tokenHistory["total_revenue"] - tokenHistory["operating_expenses"] - tokenHistory["interest_and_taxes"]))
             )
             {
-                return Afterware.sendResponse(req, res, 200, {
+                return Afterware.sendResponse(req, res, 500, {
                     status: "error",
                     message: "calculation error. Please try with correct values.",
                 });
@@ -76,7 +73,7 @@ class TokenHistoryController {
         try {
             const tokenId = req.params.id;
             if (!tokenId || tokenId === "") {
-                return Afterware.sendResponse(req, res, 400, {
+                return Afterware.sendResponse(req, res, 500, {
                     status: "Validation Error",
                     message: "Enter Proper inputs",
                 });
@@ -132,7 +129,7 @@ class TokenHistoryController {
         try {
             const id = req.params.id;
             if (!id && id === "") {
-                return Afterware.sendResponse(req, res, 400, {
+                return Afterware.sendResponse(req, res, 500, {
                     status: "Validation Error",
                     message: "Enter Proper input",
                 });
@@ -170,7 +167,7 @@ class TokenHistoryController {
     }
 
     static async validate(data){
-        const requiredFields = ["total_revenue","operating_expenses","interest_and_taxes","service_fee","net_profit"]
+        const requiredFields = ["total_revenue","operating_expenses","interest_and_taxes","net_profit"]
         const validated = requiredFields.every(key=>key in data)
         return validated
     }
