@@ -6,7 +6,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-const TokenCollection = require("../models/token");
+const TokenHistoryController = require("./tokenhistory.controller");
 const PurchaseHistoryCollection = require("../models/purchase");
 const SellHistoryCollection = require("../models/sell");
 const WithdrawRequestCollection = require("../models/withdraw_request");
@@ -23,25 +23,33 @@ class DashboardController {
             let totalPurchasedTokens = 0
             let totalPurchasedTokenAmount = 0
             purchaseHistoryCollection.forEach(element => {
-                totalPurchasedTokens += element.num_of_tokens
-                totalPurchasedTokenAmount += element.total_price 
+                if(element.num_of_tokens && element.token_price) {
+                    totalPurchasedTokens += element.num_of_tokens
+                    totalPurchasedTokenAmount += element.token_price * element.num_of_tokens 
+                }
             });
 
             let totalSoldTokens = 0
             let totalSoldTokenAmount = 0
             sellHistoryCollection.forEach(element => {
-                totalSoldTokens += element.num_of_tokens
-                totalSoldTokenAmount += element.total_price 
+                if(element.num_of_tokens && element.token_price) {
+                    totalSoldTokens += element.num_of_tokens
+                    totalSoldTokenAmount += element.token_price * element.num_of_tokens 
+                }
             });
 
             let totalWithdrawAmount = 0
             withdrawRequestCollection.forEach(element => {
-                totalWithdrawAmount += element.total_amount
+                if(element.total_amount) {
+                    totalWithdrawAmount += element.total_amount
+                }
             })
+
+            const token_price = (await TokenHistoryController._getLatestTokenPrice()).token_price
 
             const collection = {
                 users: userCollection.length,
-                token_price: 1000,
+                token_price: token_price,
                 purchase: {
                     total_tokens: totalPurchasedTokens,
                     amount: totalPurchasedTokenAmount
