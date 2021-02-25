@@ -61,8 +61,8 @@ class BuySellController {
                 user.tokens = user.tokens + num_of_tokens
                 let updatedUser = await user.save();
 
-                const collection = new purchaseHistory({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price})
-                let savedDoc = await collection.save()
+                const collection1 = new purchaseHistory({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price})
+                let savedDoc = await collection1.save()
 
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
