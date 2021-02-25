@@ -24,10 +24,6 @@ const TokenHistorySchema = new Schema({
         type: Number,
         required: true,
     },
-    service_fee:{
-        type: Number,
-        required: true,
-    },
     net_profit:{
         type: Number,
         required: true,
