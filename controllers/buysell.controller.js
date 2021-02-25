@@ -39,6 +39,7 @@ class BuySellController {
                 // update user
                 user.acc_bal = user.acc_bal - num_of_tokens*token_price;
                 user.tokens = user.tokens + num_of_tokens
+                user.total_purchase = user.total_purchase + num_of_tokens*token_price;
                 let updatedUser = await user.save();
 
                 // add record to history
@@ -59,6 +60,7 @@ class BuySellController {
 
                 // add tokens to user
                 user.tokens = user.tokens + num_of_tokens
+                user.total_purchase = user.total_purchase + num_of_tokens*token_price;
                 let updatedUser = await user.save();
 
                 const collection1 = new purchaseHistory({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price})
@@ -111,6 +113,7 @@ class BuySellController {
             // update user
             user.acc_bal = user.acc_bal + num_of_tokens*token_price;
             user.tokens = user.tokens - num_of_tokens
+            user.total_purchase = user.total_purchase - num_of_tokens*token_price;
             let updatedUser = await user.save();
 
             // add record to history
