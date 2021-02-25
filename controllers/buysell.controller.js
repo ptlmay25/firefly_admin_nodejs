@@ -15,7 +15,7 @@ class BuySellController {
             const users = (await User.find({_id:user_id}))
             if(users.length != 1)
             {
-                return Afterware.sendResponse(req, res, 200, {
+                return Afterware.sendResponse(req, res, 500, {
                     status: "fail",
                     message: "User Not Exists",
                 });
@@ -30,7 +30,7 @@ class BuySellController {
             {
                 if(num_of_tokens*token_price > user.acc_bal)
                 {
-                    return Afterware.sendResponse(req, res, 200, {
+                    return Afterware.sendResponse(req, res, 500, {
                         status: "fail",
                         message: "Balance not sufficient"
                     });
@@ -90,7 +90,7 @@ class BuySellController {
             const users = (await User.find({_id:user_id}))
             if(users.length != 1)
             {
-                return Afterware.sendResponse(req, res, 200, {
+                return Afterware.sendResponse(req, res, 500, {
                     status: "fail",
                     message: "User Not Exists",
                 });
@@ -102,7 +102,7 @@ class BuySellController {
 
             if(num_of_tokens > user.tokens)
             {
-                return Afterware.sendResponse(req, res, 200, {
+                return Afterware.sendResponse(req, res, 500, {
                     status: "fail",
                     message: "Tokens not sufficient"
                 });
