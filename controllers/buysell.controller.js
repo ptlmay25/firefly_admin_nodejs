@@ -113,7 +113,7 @@ class BuySellController {
             // update user
             user.acc_bal = user.acc_bal + num_of_tokens*token_price;
             user.tokens = user.tokens - num_of_tokens
-            user.total_purchase = user.total_purchase - num_of_tokens*token_price;
+            user.total_sell = user.total_sell + num_of_tokens*token_price;
             let updatedUser = await user.save();
 
             // add record to history
