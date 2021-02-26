@@ -15,7 +15,7 @@ class TransactionHistoryController {
             const purchases = await Purchase.find({}).sort({date: -1});
             const sells = await Sell.find({}).sort({date: -1});
 
-            all_transactions = []
+            let all_transactions = []
             for(withdraw in withdraws)
             {
                 all_transactions.push({
@@ -85,7 +85,7 @@ class TransactionHistoryController {
             const purchases = await Purchase.find({user_id:user_id}).sort({date: -1});
             const sells = await Sell.find({user_id:user_id}).sort({date: -1});
 
-            all_transactions = []
+            let all_transactions = []
             for(withdraw in withdraws)
             {
                 all_transactions.push({
