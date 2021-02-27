@@ -8,11 +8,10 @@ class PurchaseHistoryController {
     static async create(req, res) {
         try {
             const purchaseHistory = req.body.purchaseHistory;
-            
+
             const user_id = purchaseHistory.user_id || "";
-            const users = (await User.find({_id:user_id}))
-            if(users.length != 1)
-            {
+            const users = (await User.find({ _id: user_id }))
+            if (users.length != 1) {
                 return Afterware.sendResponse(req, res, 200, {
                     status: "fail",
                     message: "User Not Exists",
@@ -21,9 +20,9 @@ class PurchaseHistoryController {
             user_id = users[0]._id;
 
             const token_price = (await TokenHistoryController._getLatestTokenPrice()).token_price
-            const num_of_tokens = purchaseHistory.num_of_tokens || 1;                       
+            const num_of_tokens = purchaseHistory.num_of_tokens || 1;
 
-            const collection = new Collection({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price})
+            const collection = new Collection({ user_id: user_id, num_of_tokens: num_of_tokens, token_price: token_price })
             let savedDoc = await collection.save()
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
@@ -38,7 +37,7 @@ class PurchaseHistoryController {
             });
         }
     }
-    
+
     static async viewAll(req, res) {
         try {
             const collections = await Collection.find({});
@@ -54,8 +53,32 @@ class PurchaseHistoryController {
             });
         }
     }
+    static async viewUser(req, res) {
+        try {
+            const user_id = req.params.user_id;
+            if (!user_id && user_id === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper user_id",
+                });
+            } else {
+                const collections = await Collection.find({ user_id: user_id });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
 
-    static async delete(req,res){
+
+    static async delete(req, res) {
         const id = req.params.id;
         try {
             const deleted = await Collection.deleteOne({ _id: id });
@@ -71,7 +94,7 @@ class PurchaseHistoryController {
         }
     }
 
-    static async update(req,res){
+    static async update(req, res) {
         try {
             const id = req.params.id;
             if (!id && id === "") {
