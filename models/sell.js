@@ -7,19 +7,19 @@ const sellHistorySchema = new Schema({
         required: true,
         default: Date.now,
     },
-    user_id:{
+    user_id: {
         type: String,
         required: true
     },
-    num_of_tokens:{
+    num_of_tokens: {
         type: Number,
         required: true
     },
-    token_price:{
+    token_price: {
         type: Number,
         required: true
     },
-    status:{
+    status: {
         type: String,
         required: true,
         default: 'Fulfilled'
