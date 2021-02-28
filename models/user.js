@@ -65,6 +65,14 @@ const UserSchema = new Schema({
     tokens: {
         type: Number,
         default: 0
+    },
+    total_purchase:{
+        type: Number,
+        default: 0
+    },
+    total_sell:{
+        type: Number,
+        default: 0
     }
 }, {
     versionKey: false,

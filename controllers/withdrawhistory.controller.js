@@ -1,13 +1,8 @@
 const Afterware = require("../lib/afterware");
-const bodyParser = require("body-parser");
-const express = require("express");
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
 const Collection = require("../models/withdraw_history");
 const UserCollection = require("../models/user");
 // const { collection } = require("../models/withdraw_history");
+
 
 class WithdrawHistoryController {
 

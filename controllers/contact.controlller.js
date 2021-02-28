@@ -19,6 +19,7 @@ class ContactController {
             collection.name = req.body.name;
             collection.email = req.body.email;
             collection.message = req.body.message;
+            collection.userId = req.body.userId;
             collection.save();
 
             return Afterware.sendResponse(req, res, 200, {
@@ -49,6 +50,30 @@ class ContactController {
             });
         }
     }
+    static async viewUser(req, res) {
+        try {
+            const userId = req.params.userId;
+            if (!userId && userId === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper userId",
+                });
+            } else {
+                const collections = await Collection.find({ userId: userId });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
 
 }
 
