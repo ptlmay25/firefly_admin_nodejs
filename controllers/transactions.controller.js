@@ -3,7 +3,6 @@ const Purchase = require("../models/purchase");
 const Sell = require("../models/sell");
 const Deposit = require("../models/deposit");
 const Withdraw = require("../models/withdraw_history");
-const Purchase = require("../models/purchase");
 
 class TransactionHistoryController {
 
@@ -15,7 +14,7 @@ class TransactionHistoryController {
             const sells = await Sell.find({}).sort({date: -1});
 
             let all_transactions = []
-            for(let withdraw in withdraws)
+            for(let withdraw of withdraws)
             {
                 all_transactions.push({
                     type: "Withdraw",
@@ -24,8 +23,9 @@ class TransactionHistoryController {
                     amount: withdraw.total_amount,
                 })
             }
-            for(let deposit in deposits)
+            for(let deposit of deposits)
             {
+                console.log(deposit)
                 all_transactions.push({
                     type: "Add Funds",
                     date: deposit.date,
@@ -33,7 +33,7 @@ class TransactionHistoryController {
                     amount: deposit.total_amount,
                 })
             }
-            for(let purchase in purchases)
+            for(let purchase of purchases)
             {
                 all_transactions.push({
                     type: "Token Buy",
@@ -44,7 +44,7 @@ class TransactionHistoryController {
                     number_of_tokens: purchase.number_of_tokens,
                 })
             }
-            for(let sell in sells)
+            for(let sell of sells)
             {
                 all_transactions.push({
                     type: "Token Sell",
@@ -85,7 +85,7 @@ class TransactionHistoryController {
             const sells = await Sell.find({user_id:user_id}).sort({date: -1});
 
             let all_transactions = []
-            for(let withdraw in withdraws)
+            for(let withdraw of withdraws)
             {
                 all_transactions.push({
                     type: "Withdraw",
@@ -94,7 +94,7 @@ class TransactionHistoryController {
                     amount: withdraw.total_amount,
                 })
             }
-            for(let deposit in deposits)
+            for(let deposit of deposits)
             {
                 all_transactions.push({
                     type: "Add Funds",
@@ -103,7 +103,7 @@ class TransactionHistoryController {
                     amount: deposit.total_amount,
                 })
             }
-            for(let purchase in purchases)
+            for(let purchase of purchases)
             {
                 all_transactions.push({
                     type: "Token Buy",
@@ -114,7 +114,7 @@ class TransactionHistoryController {
                     number_of_tokens: purchase.number_of_tokens,
                 })
             }
-            for(let sell in sells)
+            for(let sell of sells)
             {
                 all_transactions.push({
                     type: "Token Sell",
