@@ -1,7 +1,6 @@
 const Afterware = require("../lib/afterware");
 const Collection = require("../models/token");
 const UserCollection = require("../models/user");
-const UserController = require("./user.controller");
 
 class TokenHistoryController {
 
@@ -19,7 +18,7 @@ class TokenHistoryController {
                 });
             }
             
-            for(let key in ["total_revenue","operating_expenses","interest_and_taxes","net_profit"])
+            for(let key in ["total_revenue","operating_expenses","interest_and_taxes","net_profit","split_50_50"])
             {
                 tokenHistory[key] = parseInt(tokenHistory[key],10)
                 if(tokenHistory[key] == NaN){
@@ -33,7 +32,9 @@ class TokenHistoryController {
                 tokenHistory["operating_expenses"]<0 ||
                 tokenHistory["interest_and_taxes"]<0 ||
                 tokenHistory["net_profit"]<0 || 
-                tokenHistory["net_profit"] != (0.5*(tokenHistory["total_revenue"] - tokenHistory["operating_expenses"] - tokenHistory["interest_and_taxes"]))
+                tokenHistory["split_50_50"]<0  || 
+                tokenHistory["net_profit"] != (tokenHistory["total_revenue"] - tokenHistory["operating_expenses"] - tokenHistory["interest_and_taxes"]) ||
+                tokenHistory["split_50_50"] != 0.5*(tokenHistory["net_profit"])
             )
             {
                 return Afterware.sendResponse(req, res, 500, {
@@ -48,7 +49,9 @@ class TokenHistoryController {
             let divident = (tokenHistory["net_profit"] || 0)/total_number_of_tokens;
             let new_token_price = token_price + divident
             
+            tokenHistory["split_50_50"] = 0.5*(tokenHistory["net_profit"]);
             tokenHistory["total_number_of_tokens"] = total_number_of_tokens;
+            tokenHistory["dividend_per_token"] = divident;
             tokenHistory["token_price"] = new_token_price;
 
             const collection = new Collection(tokenHistory);
@@ -167,7 +170,7 @@ class TokenHistoryController {
     }
 
     static async validate(data){
-        const requiredFields = ["total_revenue","operating_expenses","interest_and_taxes","net_profit"]
+        const requiredFields = ["total_revenue","operating_expenses","interest_and_taxes","net_profit","split_50_50"]
         const validated = requiredFields.every(key=>key in data)
         return validated
     }

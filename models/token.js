@@ -28,7 +28,15 @@ const TokenHistorySchema = new Schema({
         type: Number,
         required: true,
     },
+    split_50_50:{
+        type: Number,
+        required: true,
+    },
     total_number_of_tokens:{
+        type: Number,
+        required: true,
+    },
+    dividend_per_token:{
         type: Number,
         required: true,
     },
