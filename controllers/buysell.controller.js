@@ -28,6 +28,7 @@ class BuySellController {
             const payment_token = data.payment_token || ""
             if(payment_token=="")
             {
+                // paid by acc balance
                 if(num_of_tokens*token_price > user.acc_bal)
                 {
                     return Afterware.sendResponse(req, res, 500, {
@@ -63,7 +64,7 @@ class BuySellController {
                 user.total_purchase = user.total_purchase + num_of_tokens*token_price;
                 let updatedUser = await user.save();
 
-                const collection1 = new purchaseHistory({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price})
+                const collection1 = new purchaseHistory({user_id:user_id, num_of_tokens:num_of_tokens, token_price:token_price, payment_token: payment_token})
                 let savedDoc = await collection1.save()
 
                 return Afterware.sendResponse(req, res, 200, {

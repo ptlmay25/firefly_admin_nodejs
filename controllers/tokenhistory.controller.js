@@ -46,7 +46,7 @@ class TokenHistoryController {
             const total_number_of_tokens = await TokenHistoryController._getNumberOfTokens() || 1;
             const token_price = (await TokenHistoryController._getLatestTokenPrice()).token_price
 
-            let divident = (tokenHistory["net_profit"] || 0)/total_number_of_tokens;
+            let divident = (tokenHistory["split_50_50"] || 0)/total_number_of_tokens;
             let new_token_price = token_price + divident
             
             tokenHistory["split_50_50"] = 0.5*(tokenHistory["net_profit"]);
