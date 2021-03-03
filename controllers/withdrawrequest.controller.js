@@ -1,25 +1,22 @@
 const Afterware = require("../lib/afterware");
-const bodyParser = require("body-parser");
-const express = require("express");
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
 const Collection = require("../models/withdraw_request");
-const { collection } = require("../models/withdraw_request");
+const HistoryCollection = require("../models/withdraw_history");
+const UserCollection = require("../models/user");
+
+
 
 class WithdrawRequestController {
 
     static async create(req, res) {
         try {
             const collection = new Collection();
-            // collection.request_No = req.body.request_No
             collection.userId = req.body.userId;
             collection.name = req.body.name;
             collection.UPI = req.body.UPI;
             collection.BankAccountNumber = req.body.BankAccountNumber;
             collection.IFSC = req.body.IFSC;
             collection.total_amount = req.body.total_amount;
+            collection.Account_Balance = req.body.Account_Balance;
 
             collection.save();
             return Afterware.sendResponse(req, res, 200, {
@@ -36,21 +33,21 @@ class WithdrawRequestController {
         }
     }
     static async viewAll(req, res) {
-        try {
-            const collections = await Collection.find({});
-            return Afterware.sendResponse(req, res, 200, {
-                status: "success",
-                data: collections,
-            });
-        } catch (error) {
-            console.log(error);
-            return Afterware.sendResponse(req, res, 500, {
-                status: "error",
-                message: "Internal Server Error",
-            });
+            try {
+                const collections = await Collection.find({});
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            } catch (error) {
+                console.log(error);
+                return Afterware.sendResponse(req, res, 500, {
+                    status: "error",
+                    message: "Internal Server Error",
+                });
+            }
         }
-    }
-
+        // Send data with false flag
     static async view(req, res) {
         try {
             const request_No = req.params.request_No;
@@ -142,14 +139,48 @@ class WithdrawRequestController {
     }
 
 
-    // static async requestExists(request_No) {
-    //     const checkUser = await Collection.find({ _id: request_No });
-    //     if (checkUser.length === 0) {
-    //         return false;
-    //     } else {
-    //         return true;
-    //     }
-    // }
+    static async StatusCheck(req, res) {
+
+
+        const request_No = req.params.request_No;
+
+        const userId = req.params.userId;
+        console.log(userId);
+
+        const user = await UserCollection.find({ _id: userId });
+        console.log("User Data" + user);
+        console.log("Requested Amount" + req.body.total_amount);
+        console.log("User Balance" + user[0].acc_bal);
+        if (user[0].acc_bal > req.body.total_amount) {
+            await user.UserCollection.updateOne({ _id: user[0]._id }, { acc_bal: (user[0].acc_bal - req.body.total_amount) });
+
+
+
+            const Historycollection = new HistoryCollection();
+            Historycollection.userId = req.body.userId;
+            Historycollection.name = req.body.name;
+            Historycollection.UPI = req.body.UPI;
+            Historycollection.BankAccountNumber = req.body.BankAccountNumber;
+            Historycollection.IFSC = req.body.IFSC;
+            Historycollection.total_amount = req.body.total_amount;
+
+            await HistoryCollection.Historycollection.save();
+
+            //Save whole data to withdrawhistory
+            await Collection.updateOne({ _id: request_No }, { status: true }); //replace with withdrawrequest
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                message: "request is completed money is withdrawed",
+            });
+        } else {
+            await Collection.updateOne({ _id: request_No }, { status: false });
+            return Afterware.sendResponse(req, res, 400, {
+                status: "fail",
+                message: "request is failed , not sufficient balance",
+            });
+        }
+
+    }
 
 
 

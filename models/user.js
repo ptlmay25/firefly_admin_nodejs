@@ -66,11 +66,15 @@ const UserSchema = new Schema({
         type: Number,
         default: 0
     },
-    total_purchase:{
+    total_purchase: {
         type: Number,
         default: 0
     },
-    total_sell:{
+    total_sell: {
+        type: Number,
+        default: 0
+    },
+    total_dividend: {
         type: Number,
         default: 0
     }

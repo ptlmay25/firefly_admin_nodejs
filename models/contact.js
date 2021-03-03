@@ -21,6 +21,10 @@ const ContactSchema = new Schema({
     message: {
         type: String
     },
+    Solved: {
+        type: Boolean,
+        default: false
+    }
 }, {
     versionKey: false,
     timestamps: true,

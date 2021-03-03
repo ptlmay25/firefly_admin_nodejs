@@ -7,5 +7,5 @@ router.get("/view/:request_No", WithdrawRequestController.view);
 router.get("/view/user/:userId", WithdrawRequestController.viewUserRequests);
 router.delete("/delete/:request_No", WithdrawRequestController.delete) //It should be done with _id only
 router.get("/", WithdrawRequestController.viewAll)
-
+router.post("/check/:request_No/user/:userId", WithdrawRequestController.StatusCheck);
 module.exports = router;

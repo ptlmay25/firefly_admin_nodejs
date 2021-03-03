@@ -40,6 +40,7 @@ class UserController {
                 collection.DOB = req.body.DOB;
                 collection.userImg = req.body.userImg;
                 collection.aadharCardNo = req.body.aadharCardNo;
+                collection.total_dividend = req.body.total_dividend;
                 collection.save();
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",

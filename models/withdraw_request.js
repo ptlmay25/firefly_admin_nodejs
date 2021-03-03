@@ -23,6 +23,12 @@ const withdrawRequestSchema = new Schema({
     total_amount: {
         type: Number,
     },
+    Status: {
+        type: Boolean,
+    },
+    Account_Balance: {
+        type: String
+    }
 
 }, {
     versionKey: false,

@@ -14,12 +14,12 @@ class ContactController {
 
             const collection = new Collection();
 
-            // collection.date = new Date(Contact.date)
             collection.BankAccountNumber = req.body.BankAccountNumber;
             collection.name = req.body.name;
             collection.email = req.body.email;
             collection.message = req.body.message;
             collection.userId = req.body.userId;
+
             collection.save();
 
             return Afterware.sendResponse(req, res, 200, {
@@ -35,9 +35,24 @@ class ContactController {
         }
     }
 
-    static async viewAll(req, res) {
+    static async viewRequest(req, res) {
         try {
-            const collections = await Collection.find({});
+            const collections = await Collection.find({ Solved: false });
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                data: collections,
+            });
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+    static async viewHistory(req, res) {
+        try {
+            const collections = await Collection.find({ Solved: true });
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: collections,
@@ -73,7 +88,9 @@ class ContactController {
             });
         }
     }
-
+    static async Solved(req, res) {
+        //flag var should be true
+    }
 
 }
 
