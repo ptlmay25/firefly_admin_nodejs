@@ -156,15 +156,15 @@ class WithdrawRequestController {
 
 
 
-            const Historycollection = new HistoryCollection();
-            Historycollection.userId = req.body.userId;
-            Historycollection.name = req.body.name;
-            Historycollection.UPI = req.body.UPI;
-            Historycollection.BankAccountNumber = req.body.BankAccountNumber;
-            Historycollection.IFSC = req.body.IFSC;
-            Historycollection.total_amount = req.body.total_amount;
+            // const Historycollection = new HistoryCollection();
+            // Historycollection.userId = req.body.userId;
+            // Historycollection.name = req.body.name;
+            // Historycollection.UPI = req.body.UPI;
+            // Historycollection.BankAccountNumber = req.body.BankAccountNumber;
+            // Historycollection.IFSC = req.body.IFSC;
+            // Historycollection.total_amount = req.body.total_amount;
 
-            await HistoryCollection.Historycollection.save();
+            // await HistoryCollection.Historycollection.save();
 
             //Save whole data to withdrawhistory
             await Collection.updateOne({ _id: request_No }, { status: true }); //replace with withdrawrequest
