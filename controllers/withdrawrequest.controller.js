@@ -57,7 +57,7 @@ class WithdrawRequestController {
                     message: "Enter Proper request_No",
                 });
             } else {
-                const collections = await Collection.find({ _id: request_No });
+                const collections = await Collection.find({ $and: [{ _id: request_No }, { Status: false }] });
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
