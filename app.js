@@ -14,6 +14,7 @@ app.set("port", port);
 
 const routes = require("./routes/api/index");
 app.use("/api", routes);
+app.use('/static', express.static(path.join(__dirname)))
 
 //Import Datbase URL
 var db = require("./config/conn").url;

@@ -10,6 +10,7 @@ const dashboard = require("./dashboard");
 const buysell = require("./buysell");
 const deposit = require("./deposit");
 const transactions = require("./transactions");
+const fileupload = require('./fileupload');
 
 router.use('/user', user);
 router.use('/token', tokenHistory);
@@ -22,5 +23,6 @@ router.use('/dashboard', dashboard);
 router.use('/buysell', buysell);
 router.use('/deposit', deposit);
 router.use('/transaction', transactions);
+router.use('/fileupload', fileupload);
 
 module.exports = router;
