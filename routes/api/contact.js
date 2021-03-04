@@ -5,6 +5,7 @@ router.post("/add", Controller.create);
 router.get("/history", Controller.viewHistory);
 router.get("/request", Controller.viewRequest);
 router.get("/view/user/:userId", Controller.viewUser)
+router.put("/solved/:id", Controller.solved)
 
 
 module.exports = router;

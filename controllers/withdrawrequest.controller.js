@@ -139,34 +139,16 @@ class WithdrawRequestController {
     }
 
 
-    static async StatusCheck(req, res) {
-
-
+    static async statusCheck(req, res) {
         const request_No = req.params.request_No;
-
         const userId = req.params.userId;
         console.log(userId);
-
         const user = await UserCollection.find({ _id: userId });
         console.log("User Data" + user);
         console.log("Requested Amount" + req.body.total_amount);
         console.log("User Balance" + user[0].acc_bal);
         if (user[0].acc_bal > req.body.total_amount) {
             await user.UserCollection.updateOne({ _id: user[0]._id }, { acc_bal: (user[0].acc_bal - req.body.total_amount) });
-
-
-
-            // const Historycollection = new HistoryCollection();
-            // Historycollection.userId = req.body.userId;
-            // Historycollection.name = req.body.name;
-            // Historycollection.UPI = req.body.UPI;
-            // Historycollection.BankAccountNumber = req.body.BankAccountNumber;
-            // Historycollection.IFSC = req.body.IFSC;
-            // Historycollection.total_amount = req.body.total_amount;
-
-            // await HistoryCollection.Historycollection.save();
-
-            //Save whole data to withdrawhistory
             await Collection.updateOne({ _id: request_No }, { status: true }); //replace with withdrawrequest
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",

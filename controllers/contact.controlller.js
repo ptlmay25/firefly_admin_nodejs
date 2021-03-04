@@ -88,8 +88,29 @@ class ContactController {
             });
         }
     }
-    static async Solved(req, res) {
-        //flag var should be true
+    static async solved(req, res) {
+        //To use this Function please pass Status Flag true in body whenever you call this. 
+        try {
+            const id = req.params.id;
+            if (!id && id === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper input",
+                });
+            } else {
+                const updated = await Collection.updateOne({ _id: id }, req.body);
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    message: `${updated.nModified} Documents modified`,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
     }
 
 }
