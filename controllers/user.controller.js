@@ -1,45 +1,81 @@
 const Afterware = require("../lib/afterware");
 const Collection = require("../models/user");
+let multer = require('multer')
+let upload = multer().single('file')
+let fs = require("fs")
 
 class UserController {
 
     static async create(req, res) {
         try {
+            upload(req, res, async function (err) {
+                if(!err){
+                    if( req && req.file && (req.file.mimetype || "").startsWith("image"))
+                    {
+                        if(req.file.size > 3*1024*1024)
+                        {
+                            return Afterware.sendResponse(req,res,500, {
+                                status:"error",
+                                data: "upload a small image file",
+                            })
+                        }
+                        else{
+                            const userMobile = req.body.mobileNo;
+                            if (await UserController.userExists(userMobile)) {
+                                return Afterware.sendResponse(req, res, 400, {
+                                    status: "error",
+                                    message: "user already Exists",
+                                });
+                            } else {
+                                const collection = new Collection();
+                                collection.username = req.body.username;
+                                collection.gender = req.body.gender;
+                                collection.email = req.body.email;
+                                collection.password = req.body.password;
+                                collection.firstName = req.body.firstName;
+                                collection.lastName = req.body.lastName;
+                                collection.mobileNo = req.body.mobileNo;
+                                collection.homeAddress = req.body.homeAddress;
+                                collection.city = req.body.city;
+                                collection.state = req.body.state;
+                                collection.zipcode = req.body.zipcode;
+                                collection.country = req.body.country;
+                                collection.UPI = req.body.UPI;
+                                collection.bankAccountNo = req.body.bankAccountNo;
+                                collection.IFSC = req.body.IFSC;
+                                collection.DOB = req.body.DOB;
+                                collection.userImg = req.body.userImg;
+                                collection.aadharCardNo = req.body.aadharCardNo;
+                                collection.total_dividend = req.body.total_dividend;
+                                
+                                let path = (collection.username || "unknown") + new Date().getTime().toString() 
+                                path = "uploads/" + path
+                                fs.writeFileSync(path, req.file.buffer);
+                                
+                                collection.userImg = "/static/" + path
+                                collection.save();
 
-
-            const userMobile = req.body.mobileNo;
-            if (await UserController.userExists(userMobile)) {
-                return Afterware.sendResponse(req, res, 400, {
-                    status: "error",
-                    message: "user already Exists",
-                });
-            } else {
-                const collection = new Collection();
-                collection.username = req.body.username;
-                collection.gender = req.body.gender;
-                collection.email = req.body.email;
-                collection.password = req.body.password;
-                collection.firstName = req.body.firstName;
-                collection.lastName = req.body.lastName;
-                collection.mobileNo = req.body.mobileNo;
-                collection.homeAddress = req.body.homeAddress;
-                collection.city = req.body.city;
-                collection.state = req.body.state;
-                collection.zipcode = req.body.zipcode;
-                collection.country = req.body.country;
-                collection.UPI = req.body.UPI;
-                collection.bankAccountNo = req.body.bankAccountNo;
-                collection.IFSC = req.body.IFSC;
-                collection.DOB = req.body.DOB;
-                collection.userImg = req.body.userImg;
-                collection.aadharCardNo = req.body.aadharCardNo;
-                collection.total_dividend = req.body.total_dividend;
-                collection.save();
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "success",
-                    message: "new user collection created successfully",
-                });
-            }
+                                return Afterware.sendResponse(req, res, 200, {
+                                    status: "success",
+                                    message: "new user collection created successfully",
+                                });
+                            }
+                        }
+                    }
+                    else{
+                        return Afterware.sendResponse(req,res,500, {
+                            status:"error",
+                            data: "upload an image file",
+                        })
+                    }
+                }
+                else{
+                    return Afterware.sendResponse(req,res,500, {
+                        status:"error",
+                        data: "upload an image file",
+                    })
+                }
+            })
         } catch (error) {
             console.log(error);
             return Afterware.sendResponse(req, res, 500, {
