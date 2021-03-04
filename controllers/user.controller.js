@@ -53,11 +53,12 @@ class UserController {
                                 fs.writeFileSync(path, req.file.buffer);
                                 
                                 collection.userImg = "/static/" + path
-                                collection.save();
+                                let savedDoc = await collection.save();
 
                                 return Afterware.sendResponse(req, res, 200, {
                                     status: "success",
                                     message: "new user collection created successfully",
+                                    data: savedDoc
                                 });
                             }
                         }
