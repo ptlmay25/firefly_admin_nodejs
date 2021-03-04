@@ -147,8 +147,10 @@ class WithdrawRequestController {
         console.log("User Data" + user);
         console.log("Requested Amount" + req.body.total_amount);
         console.log("User Balance" + user[0].acc_bal);
+
+        console.log("User Balance" + user[0]._id);
         if (user[0].acc_bal > req.body.total_amount) {
-            await user.UserCollection.updateOne({ _id: user[0]._id }, { acc_bal: (user[0].acc_bal - req.body.total_amount) });
+            await UserCollection.updateOne({ _id: user[0]._id }, { acc_bal: (user[0].acc_bal - req.body.total_amount) });
             await Collection.updateOne({ _id: request_No }, { status: true }); //replace with withdrawrequest
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
