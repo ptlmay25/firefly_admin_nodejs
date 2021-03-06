@@ -176,7 +176,7 @@ class TokenHistoryController {
     }
 
     static async _getLatestTokenPrice(){
-        const DEFAULT_PRICE = 1000;
+        const DEFAULT_PRICE = 100;
         let latestPrice = {
             token_date: null,
             token_price: DEFAULT_PRICE
