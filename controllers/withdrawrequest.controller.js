@@ -151,13 +151,13 @@ class WithdrawRequestController {
         console.log("User Balance" + user[0]._id);
         if (user[0].acc_bal > req.body.total_amount) {
             await UserCollection.updateOne({ _id: user[0]._id }, { acc_bal: (user[0].acc_bal - req.body.total_amount) });
-            await Collection.updateOne({ _id: request_No }, { status: true }); //replace with withdrawrequest
+            await Collection.updateOne({ _id: request_No }, { Status: true }); //replace with withdrawrequest
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 message: "request is completed money is withdrawed",
             });
         } else {
-            await Collection.updateOne({ _id: request_No }, { status: false });
+            await Collection.updateOne({ _id: request_No }, { Status: false });
             return Afterware.sendResponse(req, res, 400, {
                 status: "fail",
                 message: "request is failed , not sufficient balance",
