@@ -11,6 +11,7 @@ const buysell = require("./buysell");
 const deposit = require("./deposit");
 const transactions = require("./transactions");
 const fileupload = require('./fileupload');
+const brand = require('./brand');
 
 router.use('/user', user);
 router.use('/token', tokenHistory);
@@ -24,5 +25,7 @@ router.use('/buysell', buysell);
 router.use('/deposit', deposit);
 router.use('/transaction', transactions);
 router.use('/fileupload', fileupload);
+router.use('/brand', brand);
+
 
 module.exports = router;
