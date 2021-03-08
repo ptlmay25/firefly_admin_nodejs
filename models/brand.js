@@ -23,7 +23,9 @@ const BrandSchema = new Schema({
     },
     about: {
         type: String,
-
+    },
+    brandImg: {
+        type: String,
     }
 }, {
     versionKey: false,

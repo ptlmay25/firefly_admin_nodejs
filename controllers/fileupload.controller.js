@@ -3,6 +3,7 @@ let multer = require('multer')
 let upload = multer().single('file')
 let fs = require("fs")
 const User = require("../models/user");
+const Brand = require("../models/brand");
 
 class FileUploadController {
 
@@ -12,7 +13,7 @@ class FileUploadController {
                 if(!err){
                     if((req.file.mimetype || "").startsWith("image"))
                     {
-                        if(req.file.size > 3*1024*1024)
+                        if(req.file.size > 10*1024*1024)
                         {
                             return Afterware.sendResponse(req,res,500, {
                                 status:"error",
@@ -21,35 +22,66 @@ class FileUploadController {
                         }
                         else{
                             // image is okay from here
-                            const user_id = req.params.user_id || "";
-                            if (!user_id && user_id === "") {
+                            const id = req.params.id || "";
+                            const type = req.params.type || "";
+
+                            if (id == "" || (type!="brand" && type!="user")) {
+                                // both should not empty
                                 return Afterware.sendResponse(req, res, 400, {
                                     status: "Validation Error",
-                                    message: "Enter Proper user_id",
+                                    message: "Enter proper id and type",
                                 });
                             }
                             else{
-                                let user = await User.find({ _id: user_id })
-                                if(user.length !== 1){
-                                    return Afterware.sendResponse(req, res, 400, {
-                                        status: "Validation Error",
-                                        message: "No User Exists",
-                                    });
+                                if(type="user")
+                                {
+                                    let user = await User.find({ _id: id })
+                                    if(user.length !== 1){
+                                        return Afterware.sendResponse(req, res, 400, {
+                                            status: "Validation Error",
+                                            message: "No User Exists",
+                                        });
+                                    }
+                                    else{
+                                        user = user[0]
+
+                                        let path = "Profile_Pic_" + new Date().getTime().toString()
+                                        path = "uploads/" + path
+                                        fs.writeFileSync(path, req.file.buffer);
+
+                                        user.userImg = "/static/" + path
+                                        let savedDoc = await user.save()
+
+                                        return Afterware.sendResponse(req,res,200, {
+                                            status:"success",
+                                            data: savedDoc
+                                        })
+                                    }
                                 }
                                 else{
-                                    user = user[0]
+                                    // type is brand
+                                    let brand = await Brand.find({ _id: id })
+                                    if(brand.length !== 1){
+                                        return Afterware.sendResponse(req, res, 400, {
+                                            status: "Validation Error",
+                                            message: "No Brand Exists",
+                                        });
+                                    }
+                                    else{
+                                        brand = brand[0]
 
-                                    let path = "Profile_Pic_" + new Date().getTime().toString()
-                                    path = "uploads/" + path
-                                    fs.writeFileSync(path, req.file.buffer);
+                                        let path = "Brand_Image_" + new Date().getTime().toString()
+                                        path = "uploads/" + path
+                                        fs.writeFileSync(path, req.file.buffer);
 
-                                    user.userImg = "/static/" + path
-                                    let savedDoc = await user.save()
+                                        brand.brandImg = "/static/" + path
+                                        let savedDoc = await brand.save()
 
-                                    return Afterware.sendResponse(req,res,200, {
-                                        status:"success",
-                                        data: savedDoc
-                                    })
+                                        return Afterware.sendResponse(req,res,200, {
+                                            status:"success",
+                                            data: savedDoc
+                                        })
+                                    }
                                 }
                             }
                         }
