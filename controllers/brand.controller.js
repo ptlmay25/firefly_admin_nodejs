@@ -1,26 +1,62 @@
 const Collection = require("../models/brand");
 const Afterware = require("../lib/afterware");
-
+let multer = require('multer')
+let upload = multer().single('file')
+let fs = require("fs")
 
 class BrandController {
 
     static async create(req, res) {
         try {
+            upload(req, res, async function (err) {
+                if(!err){
+                    if( req && req.file && (req.file.mimetype || "").startsWith("image"))
+                    {
+                        if(req.file.size > 3*1024*1024)
+                        {
+                            return Afterware.sendResponse(req,res,500, {
+                                status:"error",
+                                data: "upload a small image file",
+                            })
+                        }
+                        else{
+                            const collection = new Collection();
+                            collection.brandName = req.body.brandName;
+                            collection.year = req.body.year;
+                            collection.noOfProduct = req.body.noOfProduct;
+                            collection.avgRevenue = req.body.avgRevenue;
+                            collection.city = req.body.city;
+                            collection.country = req.body.country;
+                            collection.about = req.body.about;
 
-            const collection = new Collection();
-            collection.brandName = req.body.brandName;
-            collection.year = req.body.year;
-            collection.noOfProduct = req.body.noOfProduct;
-            collection.avgRevenue = req.body.avgRevenue;
-            collection.city = req.body.city;
-            collection.country = req.body.country;
-            collection.about = req.body.about;
-            collection.save();
+                            let path = (collection.brandName || "Brand_Image") + "_" + new Date().getTime().toString() 
+                            path = "uploads/" + path
+                            fs.writeFileSync(path, req.file.buffer);
+                            collection.brandImg = "/static/" + path
 
-            return Afterware.sendResponse(req, res, 200, {
-                status: "success",
-                message: "new brand collection created successfully",
-            });
+                            let savedDoc = await collection.save();
+
+                            return Afterware.sendResponse(req, res, 200, {
+                                status: "success",
+                                message: "new brand collection created successfully",
+                                savedDoc: savedDoc
+                            });
+                        }
+                    }
+                    else{
+                        return Afterware.sendResponse(req,res,500, {
+                            status:"error",
+                            data: "upload an image file",
+                        })
+                    }
+                }
+                else{
+                    return Afterware.sendResponse(req,res,500, {
+                        status:"error",
+                        data: "upload an proper image file",
+                    })
+                }
+            })
         } catch (error) {
             console.log(error);
             return Afterware.sendResponse(req, res, 500, {
