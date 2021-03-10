@@ -27,6 +27,8 @@ router.use('/deposit', deposit);
 router.use('/transaction', transactions);
 router.use('/fileupload', fileupload);
 router.use('/brand', brand);
+router.use('/retailer', retailer);
+
 
 
 module.exports = router;

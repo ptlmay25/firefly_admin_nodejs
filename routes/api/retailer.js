@@ -3,6 +3,6 @@ const RetailerController = require("../../controllers/retailer.controller");
 
 router.post("/create", RetailerController.create);
 router.get("/", RetailerController.viewAll);
-router.delete("/delete/:mobileNo", RetailerController.delete) //It should be done with _id only
+router.delete("/delete/:id", RetailerController.delete); //It should be done with _id only
 
 module.exports = router;

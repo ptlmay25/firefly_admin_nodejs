@@ -3,7 +3,7 @@ const Collection = require("../models/user");
 class UserController {
 
     static async create(req, res) {
-        try {    
+        try {
             const userMobile = req.body.mobileNo;
             if (await UserController.userExists(userMobile)) {
                 return Afterware.sendResponse(req, res, 400, {
@@ -31,7 +31,7 @@ class UserController {
                 collection.userImg = req.body.userImg;
                 collection.aadharCardNo = req.body.aadharCardNo;
                 collection.total_dividend = req.body.total_dividend;
-                
+
                 let savedDoc = await collection.save();
 
                 return Afterware.sendResponse(req, res, 200, {
