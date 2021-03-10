@@ -2,6 +2,7 @@ const Afterware = require("../lib/afterware");
 const Collection = require("../models/withdraw_request");
 const HistoryCollection = require("../models/withdraw_history");
 const UserCollection = require("../models/user");
+const user = require("../models/user");
 
 
 
@@ -117,13 +118,14 @@ class WithdrawRequestController {
     static async viewUserRequests(req, res) {
         try {
             const userId = req.params.userId;
+            console.log(userId)
             if (!userId && userId === "") {
                 return Afterware.sendResponse(req, res, 400, {
                     status: "Validation Error",
                     message: "Enter Proper user",
                 });
             } else {
-                const collections = await Collection.find({ userId: userId });
+                const collections = await Collection.find({ userId: userId, Status: true });
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,

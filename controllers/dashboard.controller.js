@@ -11,6 +11,7 @@ const PurchaseHistoryCollection = require("../models/purchase");
 const SellHistoryCollection = require("../models/sell");
 const WithdrawRequestCollection = require("../models/withdraw_request");
 const UserCollection = require("../models/user");
+const BrandCollection = require("../models/brand");
 
 class DashboardController {
     static async getData(req, res) {
@@ -19,6 +20,7 @@ class DashboardController {
             const withdrawRequestCollection = await WithdrawRequestCollection.find({});
             const sellHistoryCollection = await SellHistoryCollection.find({});
             const userCollection = await UserCollection.find({});
+            const brandCollection = await BrandCollection.find({});
 
             let totalPurchasedTokens = 0
             let totalPurchasedTokenAmount = 0
@@ -39,16 +41,24 @@ class DashboardController {
             });
 
             let totalWithdrawAmount = 0
+            let numOfRequests = 0
             withdrawRequestCollection.forEach(element => {
-                if(element.total_amount) {
+                if(element.Status === false && element.total_amount) {        
                     totalWithdrawAmount += element.total_amount
+                    numOfRequests += 1
                 }
+            })
+
+            let numOfProducts = 0
+            brandCollection.forEach(element => {
+                numOfProducts += element.numOfProducts
             })
 
             const token_price = (await TokenHistoryController._getLatestTokenPrice()).token_price
 
             const collection = {
                 users: userCollection.length,
+                partners: 10,
                 token_price: token_price,
                 purchase: {
                     total_tokens: totalPurchasedTokens,
@@ -59,12 +69,12 @@ class DashboardController {
                     amount: totalSoldTokenAmount
                 },   
                 withdrawRequest: {
-                    requests: withdrawRequestCollection.length,
+                    requests: numOfRequests,
                     amount: totalWithdrawAmount,
                 },
-                hotels: {
-                    brands: 0,
-                    rooms: 0
+                business: {
+                    brands: brandCollection.length,
+                    products: numOfProducts
                 },            
             }
 

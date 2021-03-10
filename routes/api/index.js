@@ -12,6 +12,7 @@ const deposit = require("./deposit");
 const transactions = require("./transactions");
 const fileupload = require('./fileupload');
 const brand = require('./brand');
+const retailer = require('./retailer')
 
 router.use('/user', user);
 router.use('/token', tokenHistory);
