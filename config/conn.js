@@ -1,4 +1,4 @@
 module.exports = {
-    url: "Umongodb+srv://Firefly:Firefly@fireflycluster.alxsq.mongodb.net/FireflyDB?retryWrites=true&w=majority",
+	url:"mongodb+srv://saler25club:firefly250@salersclub250.zobuy.mongodb.net/FireflyDB?retryWrites=true&w=majority",
     secret: "werFIREFLY$1128%",
 };

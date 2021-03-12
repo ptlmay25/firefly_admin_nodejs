@@ -2,7 +2,7 @@
     <body>
         <h1>form</h1>
 
-        <!-- <img src="http://localhost:5000/static/uploads/unknown__1614800585840"> -->
+        <img src="http://localhost:5000/static/uploads/asfa_1615445054190">
         <form name="brand" name="uploader" enctype="multipart/form-data" id="form1">
             <input type="text" name="brandName"></inpu>
             <input name="file" type="file">
@@ -16,7 +16,7 @@
                     ev.preventDefault(); // Prevent browser default submit.
                     let formData = new FormData(this);
                     $.ajax({
-                        url: "http://dd0b02f7c5d7.ngrok.io/api/brand/create",
+                        url: "http:/api/brand/create",
                         type: "POST",
                         data: formData,
                         success: function (msg) {
