@@ -27,9 +27,6 @@ const RetailerSchema = new Schema({
     zipcode: {
         type: String
     },
-    country: {
-        type: String
-    },
     storeName: {
         type: String
     },
