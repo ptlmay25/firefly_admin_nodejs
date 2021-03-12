@@ -11,6 +11,7 @@ const PurchaseHistoryCollection = require("../models/purchase");
 const SellHistoryCollection = require("../models/sell");
 const WithdrawRequestCollection = require("../models/withdraw_request");
 const UserCollection = require("../models/user");
+const RetailerCollection = require("../models/retailer")
 const BrandCollection = require("../models/brand");
 
 class DashboardController {
@@ -20,6 +21,7 @@ class DashboardController {
             const withdrawRequestCollection = await WithdrawRequestCollection.find({});
             const sellHistoryCollection = await SellHistoryCollection.find({});
             const userCollection = await UserCollection.find({});
+            const retailerCollection = await RetailerCollection.find({});
             const brandCollection = await BrandCollection.find({});
 
             let totalPurchasedTokens = 0
@@ -51,14 +53,14 @@ class DashboardController {
 
             let numOfProducts = 0
             brandCollection.forEach(element => {
-                numOfProducts += element.numOfProducts
+                numOfProducts += element.noOfProduct
             })
 
             const token_price = (await TokenHistoryController._getLatestTokenPrice()).token_price
 
             const collection = {
                 users: userCollection.length,
-                partners: 10,
+                partners: retailerCollection.length,
                 token_price: token_price,
                 purchase: {
                     total_tokens: totalPurchasedTokens,

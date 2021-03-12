@@ -13,7 +13,6 @@ class RetailerController {
             collection.city = req.body.city;
             collection.state = req.body.state;
             collection.zipcode = req.body.zipcode;
-            collection.country = req.body.country;
             collection.storeName = req.body.storeName;
             collection.storeAddress = req.body.storeAddress;
             collection.gstNumber = req.body.gstNumber;
