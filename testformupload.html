@@ -16,7 +16,7 @@
                     ev.preventDefault(); // Prevent browser default submit.
                     let formData = new FormData(this);
                     $.ajax({
-                        url: "http:/api/brand/create",
+                        url: "http:localhost:5000/api/brand/create",
                         type: "POST",
                         data: formData,
                         success: function (msg) {
