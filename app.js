@@ -25,13 +25,6 @@ mongoose
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log(err));
 
-app.use('/status', (req, res) => {
-    res.json({
-        "status": "healthy",
-        "timestamp": new Date(),
-    })
-})
-
 // app.use('/',(req,res)=>{
 //     res.send("<h1>Firefly Backend Server</h1>");
 // })

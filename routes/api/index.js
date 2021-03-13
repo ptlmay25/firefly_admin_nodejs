@@ -29,6 +29,11 @@ router.use('/fileupload', fileupload);
 router.use('/brand', brand);
 router.use('/retailer', retailer);
 
-
+router.use('/status', (req, res) => {
+    res.json({
+        "status": "healthy",
+        "timestamp": new Date(),
+    })
+})
 
 module.exports = router;
