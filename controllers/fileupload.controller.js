@@ -45,7 +45,7 @@ class FileUploadController {
                                     else{
                                         user = user[0]
 
-                                        let path = "Profile_Pic_" + new Date().getTime().toString()
+                                        let path = user._id || "User_" + new Date().getTime().toString()
                                         path = "uploads/" + path
                                         fs.writeFileSync(path, req.file.buffer);
 
