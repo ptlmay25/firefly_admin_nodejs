@@ -23,7 +23,7 @@ class FileUploadController {
                         else{
                             // image is okay from here
                             const id = req.params.id || "";
-                            const type = req.params.type || "";
+                            const type = req.params.type || "user";
 
                             if (id == "" || (type!="brand" && type!="user")) {
                                 // both should not empty
