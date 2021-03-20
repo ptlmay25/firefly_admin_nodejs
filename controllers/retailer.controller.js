@@ -34,6 +34,30 @@ class RetailerController {
         }
     }
 
+    static async update(req, res) {
+        try {
+            const id = req.params.id;
+            if (!id && id === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper userId",
+                });
+            } else {
+                const updated = await Collection.updateOne({ _id: id }, req.body);
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    message: `${updated.nModified} Documents modified`,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
     static async viewAll(req, res) {
         try {
             const collections = await Collection.find({});
@@ -42,6 +66,30 @@ class RetailerController {
                 data: collections,
             });
         } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
+        }
+    }
+
+    static async view(req, res) {
+        try {
+            const id = req.params.id;
+            if (!id && id === "") {
+                return Afterware.sendResponse(req, res, 400, {
+                    status: "Validation Error",
+                    message: "Enter Proper id",
+                });
+            } else {
+                const collections = await Collection.find({ _id: id });
+                return Afterware.sendResponse(req, res, 200, {
+                    status: "success",
+                    data: collections,
+                });
+            }
+        } catch(error) {
             console.log(error);
             return Afterware.sendResponse(req, res, 500, {
                 status: "error",
