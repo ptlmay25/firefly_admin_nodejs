@@ -25,9 +25,9 @@ mongoose
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log(err));
 
-// app.use('/',(req,res)=>{
-//     res.send("<h1>Firefly Backend Server</h1>");
-// })
+app.use('/',(req,res)=>{
+    res.send("<h1>Firefly Backend Server</h1>");
+})
 
 //We are running our application on server port : 8080
 app.listen(port, () => {
