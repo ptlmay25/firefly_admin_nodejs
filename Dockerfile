@@ -1,13 +1,13 @@
 FROM node:10-alpine
 
-RUN echo "Start of Dockerfile"
-
 WORKDIR /usr/backend
+
+COPY package*.json ./
+
+RUN npm install
 
 COPY . .
 
+EXPOSE 8080
+
 CMD ["node", "app.js"]
-
-EXPOSE $PORT
-
-RUN echo "End of Dockerfile"

@@ -23,7 +23,7 @@ class FileUploadController {
                         else{
                             // image is okay from here
                             const id = req.params.id || "";
-                            const type = req.params.type || "";
+                            const type = req.params.type || "user";
 
                             if (id == "" || (type!="brand" && type!="user")) {
                                 // both should not empty
@@ -45,7 +45,7 @@ class FileUploadController {
                                     else{
                                         user = user[0]
 
-                                        let path = "Profile_Pic_" + new Date().getTime().toString()
+                                        let path = user._id || "User_" + new Date().getTime().toString()
                                         path = "uploads/" + path
                                         fs.writeFileSync(path, req.file.buffer);
 

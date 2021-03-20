@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 app.set("port", port);
 
 const routes = require("./routes/api/index");
@@ -25,11 +25,11 @@ mongoose
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log(err));
 
-// app.use('/',(req,res)=>{
-//     res.send("<h1>Firefly Backend Server</h1>");
-// })
+app.use('/',(req,res)=>{
+    res.send("<h1>Firefly Backend Server</h1>");
+})
 
-//We are running our application on server port : 5000
+//We are running our application on server port : 8080
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
 });

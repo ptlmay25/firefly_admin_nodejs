@@ -2,7 +2,7 @@
     <body>
         <h1>form</h1>
 
-        <img src="http://localhost:5000/static/uploads/asfa_1615445054190">
+        <img src="http://localhost:8080/static/uploads/asfa_1615445054190">
         <form name="brand" name="uploader" enctype="multipart/form-data" id="form1">
             <input type="text" name="brandName"></inpu>
             <input name="file" type="file">
@@ -16,7 +16,7 @@
                     ev.preventDefault(); // Prevent browser default submit.
                     let formData = new FormData(this);
                     $.ajax({
-                        url: "http:/api/brand/create",
+                        url: "https://firefly-admin-nodejs-nob8m.ondigitalocean.app/app/api/brand/create",
                         type: "POST",
                         data: formData,
                         success: function (msg) {
