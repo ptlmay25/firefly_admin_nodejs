@@ -101,7 +101,7 @@ class TokenHistoryController {
 
     static async viewAll(req, res) {
         try {
-            const collections = await Collection.find({}).sort({token_date: -1, token_price: -1});
+            const collections = await Collection.find({}).sort({upload_date: -1, token_price: -1});
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: collections,
@@ -185,7 +185,7 @@ class TokenHistoryController {
             token_price: DEFAULT_PRICE
         }
         try{
-            const latestPriceArray =  await Collection.find().sort({token_date: -1, token_price: -1}).limit(1);
+            const latestPriceArray =  await Collection.find().sort({upload_date: -1, token_price: -1}).limit(1);
             if(latestPriceArray.length==1)
             {
                 latestPrice = latestPriceArray[0];

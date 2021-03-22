@@ -44,6 +44,13 @@ const RetailerSchema = new Schema({
     },
     totalArea: {
         type: String
+    },
+    numberOfStores: {
+        type: Number,
+        default: 0,
+    },
+    storeImg: {
+        type: String
     }
 }, {
     versionKey: false,

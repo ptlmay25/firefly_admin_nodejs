@@ -16,7 +16,8 @@
                     ev.preventDefault(); // Prevent browser default submit.
                     let formData = new FormData(this);
                     $.ajax({
-                        url: "https://firefly-admin-nodejs-nob8m.ondigitalocean.app/app/api/brand/create",
+                        url: "http://localhost:8080/api/brand/create",
+                        // url: "https://firefly-admin-nodejs-nob8m.ondigitalocean.app/app/api/brand/create",
                         type: "POST",
                         data: formData,
                         success: function (msg) {

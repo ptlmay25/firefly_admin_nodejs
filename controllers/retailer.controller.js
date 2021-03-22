@@ -19,6 +19,8 @@ class RetailerController {
             collection.storeCategory = req.body.storeCategory;
             collection.storeZipCode = req.body.storeZipCode;
             collection.totalArea = req.body.totalArea;
+            collection.numberOfStores = req.body.numberOfStores;
+            collection.storeImage = req.body.storeImg;
 
             collection.save();
             return Afterware.sendResponse(req, res, 200, {
