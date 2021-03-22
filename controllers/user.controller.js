@@ -28,7 +28,7 @@ class UserController {
                 collection.bankAccountNo = req.body.bankAccountNo;
                 collection.IFSC = req.body.IFSC;
                 collection.DOB = req.body.DOB;
-                collection.userImg = req.body.userImg;
+                collection.userImg = req.body.userImg || "https://firebasestorage.googleapis.com/v0/b/salersclub.appspot.com/o/user%2Fdefault.png?alt=media&token=8b84a88d-52b6-4738-bd23-856cb5e42f56";
                 collection.aadharCardNo = req.body.aadharCardNo;
                 collection.total_dividend = req.body.total_dividend;
 
