@@ -22,10 +22,12 @@ class RetailerController {
             collection.numberOfStores = req.body.numberOfStores;
             collection.storeImage = req.body.storeImg;
 
-            collection.save();
+            let savedDoc = await collection.save();
+            
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 message: "new retailer collection created successfully",
+                savedDoc: savedDoc
             });
         } catch (error) {
             console.log(error);
