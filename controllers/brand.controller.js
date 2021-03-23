@@ -13,7 +13,7 @@ class BrandController {
             collection.city = req.body.city;
             collection.country = req.body.country;
             collection.about = req.body.about;
-            collection.brandImg = req.body.brandImg;
+            collection.brandImg = req.body.brandImg || "https://firebasestorage.googleapis.com/v0/b/salersclub.appspot.com/o/brand%2FIMG-20210323-WA0011.jpg?alt=media&token=4ad64fa9-e003-417e-b6bc-e9910b63225d";
 
             let savedDoc = await collection.save();
 
