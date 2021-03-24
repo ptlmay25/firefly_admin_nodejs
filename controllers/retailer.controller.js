@@ -20,7 +20,7 @@ class RetailerController {
             collection.storeZipCode = req.body.storeZipCode;
             collection.totalArea = req.body.totalArea;
             collection.numberOfStores = req.body.numberOfStores;
-            collection.storeImage = req.body.storeImg || "https://firebasestorage.googleapis.com/v0/b/salersclub.appspot.com/o/brand%2FIMG-20210323-WA0011.jpg?alt=media&token=4ad64fa9-e003-417e-b6bc-e9910b63225d";
+            collection.storeImg = req.body.storeImg || "https://firebasestorage.googleapis.com/v0/b/salersclub.appspot.com/o/brand%2FIMG-20210323-WA0011.jpg?alt=media&token=4ad64fa9-e003-417e-b6bc-e9910b63225d";
 
             let savedDoc = await collection.save();
             
