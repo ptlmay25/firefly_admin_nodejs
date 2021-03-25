@@ -18,6 +18,7 @@ class WithdrawRequestController {
             collection.IFSC = req.body.IFSC;
             collection.total_amount = req.body.total_amount;
             collection.Account_Balance = req.body.Account_Balance;
+            collection.Status = false
 
             collection.save();
             return Afterware.sendResponse(req, res, 200, {
