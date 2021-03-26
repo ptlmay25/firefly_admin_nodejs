@@ -16,12 +16,22 @@ class TransactionHistoryController {
             let all_transactions = []
             for(let withdraw of withdraws)
             {
-                all_transactions.push({
-                    type: "Withdraw",
-                    date: withdraw.date,
-                    user_id: withdraw.userId,
-                    amount: withdraw.total_amount,
-                })
+                if(withdraw.status == false){
+                    all_transactions.push({
+                        type: "Fund Withdraw (In process)",
+                        date: withdraw.date,
+                        user_id: withdraw.userId,
+                        amount: withdraw.total_amount,
+                    })
+                }
+                else{
+                    all_transactions.push({
+                        type: "Fund Withdraw",
+                        date: withdraw.date,
+                        user_id: withdraw.userId,
+                        amount: withdraw.total_amount,
+                    })
+                }
             }
             for(let deposit of deposits)
             {
@@ -87,12 +97,22 @@ class TransactionHistoryController {
             let all_transactions = []
             for(let withdraw of withdraws)
             {
-                all_transactions.push({
-                    type: "Withdraw",
-                    date: withdraw.date,
-                    user_id: withdraw.userId,
-                    amount: withdraw.total_amount,
-                })
+                if(withdraw.status == false){
+                    all_transactions.push({
+                        type: "Fund Withdraw (In process)",
+                        date: withdraw.date,
+                        user_id: withdraw.userId,
+                        amount: withdraw.total_amount,
+                    })
+                }
+                else{
+                    all_transactions.push({
+                        type: "Fund Withdraw",
+                        date: withdraw.date,
+                        user_id: withdraw.userId,
+                        amount: withdraw.total_amount,
+                    })
+                }
             }
             for(let deposit of deposits)
             {
