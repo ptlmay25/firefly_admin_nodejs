@@ -2,7 +2,7 @@ const Afterware = require("../lib/afterware");
 const Purchase = require("../models/purchase");
 const Sell = require("../models/sell");
 const Deposit = require("../models/deposit");
-const Withdraw = require("../models/withdraw_history");
+const Withdraw = require("../models/withdraw_request");
 
 class TransactionHistoryController {
 
@@ -16,9 +16,10 @@ class TransactionHistoryController {
             let all_transactions = []
             for(let withdraw of withdraws)
             {
-                if(withdraw.status == false){
+                if(withdraw.Status == false){
                     all_transactions.push({
                         type: "Fund Withdraw (In process)",
+                        id: withdraw._id,
                         date: withdraw.date,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
@@ -27,6 +28,7 @@ class TransactionHistoryController {
                 else{
                     all_transactions.push({
                         type: "Fund Withdraw",
+                        id: withdraw._id,
                         date: withdraw.date,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
@@ -35,9 +37,9 @@ class TransactionHistoryController {
             }
             for(let deposit of deposits)
             {
-                console.log(deposit)
                 all_transactions.push({
                     type: "Add Funds",
+                    id: deposit._id,
                     date: deposit.date,
                     user_id: deposit.user_id,
                     amount: deposit.total_amount,
@@ -47,6 +49,7 @@ class TransactionHistoryController {
             {
                 all_transactions.push({
                     type: "Token Buy",
+                    id: purchase._id,
                     date: purchase.date,
                     user_id: purchase.user_id,
                     amount: purchase.num_of_tokens*purchase.token_price,
@@ -58,6 +61,7 @@ class TransactionHistoryController {
             {
                 all_transactions.push({
                     type: "Token Sell",
+                    id: sell._id,
                     date: sell.date,
                     user_id: sell.user_id,
                     amount: sell.num_of_tokens*sell.token_price,
@@ -72,6 +76,7 @@ class TransactionHistoryController {
                 return 0;
             });
 
+            all_transactions.reverse();
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: all_transactions,
@@ -97,9 +102,10 @@ class TransactionHistoryController {
             let all_transactions = []
             for(let withdraw of withdraws)
             {
-                if(withdraw.status == false){
+                if(withdraw.Status == false){
                     all_transactions.push({
                         type: "Fund Withdraw (In process)",
+                        id: withdraw._id,
                         date: withdraw.date,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
@@ -108,6 +114,7 @@ class TransactionHistoryController {
                 else{
                     all_transactions.push({
                         type: "Fund Withdraw",
+                        id: withdraw._id,
                         date: withdraw.date,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
@@ -118,6 +125,7 @@ class TransactionHistoryController {
             {
                 all_transactions.push({
                     type: "Add Funds",
+                    id: deposit._id,
                     date: deposit.date,
                     user_id: deposit.user_id,
                     amount: deposit.total_amount,
@@ -127,6 +135,7 @@ class TransactionHistoryController {
             {
                 all_transactions.push({
                     type: "Token Buy",
+                    id: purchase._id,
                     date: purchase.date,
                     user_id: purchase.user_id,
                     amount: purchase.num_of_tokens*purchase.token_price,
@@ -138,6 +147,7 @@ class TransactionHistoryController {
             {
                 all_transactions.push({
                     type: "Token Sell",
+                    id: sell._id,
                     date: sell.date,
                     user_id: sell.user_id,
                     amount: sell.num_of_tokens*sell.token_price,
@@ -152,6 +162,7 @@ class TransactionHistoryController {
                 return 0;
             });
 
+            all_transactions.reverse();
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: all_transactions,

@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const withdrawRequestSchema = new Schema({
+    date: {
+        type: Date,
+        required: true,
+        default: Date.now,
+    },
     userId: {
         type: String,
     },
@@ -25,6 +30,7 @@ const withdrawRequestSchema = new Schema({
     },
     Status: {
         type: Boolean,
+        default: false
     },
     Account_Balance: {
         type: String
