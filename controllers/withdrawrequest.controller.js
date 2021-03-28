@@ -55,21 +55,21 @@ class WithdrawRequestController {
         }
     }
     static async viewAll(req, res) {
-            try {
-                const collections = await Collection.find({});
-                return Afterware.sendResponse(req, res, 200, {
-                    status: "success",
-                    data: collections,
-                });
-            } catch (error) {
-                console.log(error);
-                return Afterware.sendResponse(req, res, 500, {
-                    status: "error",
-                    message: "Internal Server Error",
-                });
-            }
+        try {
+            const collections = await Collection.find({});
+            return Afterware.sendResponse(req, res, 200, {
+                status: "success",
+                data: collections,
+            });
+        } catch (error) {
+            console.log(error);
+            return Afterware.sendResponse(req, res, 500, {
+                status: "error",
+                message: "Internal Server Error",
+            });
         }
-        // Send data with false flag
+    }
+    
     static async view(req, res) {
         try {
             const request_No = req.params.request_No;
@@ -79,7 +79,7 @@ class WithdrawRequestController {
                     message: "Enter Proper request_No",
                 });
             } else {
-                const collections = await Collection.find({ $and: [{ _id: request_No }, { Status: false }] });
+                const collections = await Collection.find({ _id: request_No });
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
@@ -146,7 +146,7 @@ class WithdrawRequestController {
                     message: "Enter Proper user",
                 });
             } else {
-                const collections = await Collection.find({ userId: userId, Status: true });
+                const collections = await Collection.find({ userId: userId});
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
