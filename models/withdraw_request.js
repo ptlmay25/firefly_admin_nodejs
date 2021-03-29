@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const withdrawRequestSchema = new Schema({
-    date: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
     userId: {
         type: String,
     },

@@ -8,7 +8,7 @@ class TransactionHistoryController {
 
     static async viewAll(req, res) {
         try {
-            const withdraws = await Withdraw.find({}).sort({date: -1});
+            const withdraws = await Withdraw.find({}).sort({createdAt: -1});
             const deposits = await Deposit.find({}).sort({date: -1});
             const purchases = await Purchase.find({}).sort({date: -1});
             const sells = await Sell.find({}).sort({date: -1});
@@ -20,7 +20,7 @@ class TransactionHistoryController {
                     all_transactions.push({
                         type: "Fund Withdraw (In process)",
                         id: withdraw._id,
-                        date: withdraw.date,
+                        date: withdraw.createdAt,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
                     })
@@ -29,7 +29,7 @@ class TransactionHistoryController {
                     all_transactions.push({
                         type: "Fund Withdraw",
                         id: withdraw._id,
-                        date: withdraw.date,
+                        date: withdraw.createdAt,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
                     })
@@ -106,7 +106,7 @@ class TransactionHistoryController {
                     all_transactions.push({
                         type: "Fund Withdraw (In process)",
                         id: withdraw._id,
-                        date: withdraw.date,
+                        date: withdraw.createdAt,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
                     })
@@ -115,7 +115,7 @@ class TransactionHistoryController {
                     all_transactions.push({
                         type: "Fund Withdraw",
                         id: withdraw._id,
-                        date: withdraw.date,
+                        date: withdraw.createdAt,
                         user_id: withdraw.userId,
                         amount: withdraw.total_amount,
                     })
