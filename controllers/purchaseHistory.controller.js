@@ -40,7 +40,7 @@ class PurchaseHistoryController {
 
     static async viewAll(req, res) {
         try {
-            const collections = await Collection.find({});
+            const collections = await Collection.find({}).sort({date: -1});
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: collections,
@@ -62,7 +62,7 @@ class PurchaseHistoryController {
                     message: "Enter Proper user_id",
                 });
             } else {
-                const collections = await Collection.find({ user_id: user_id });
+                const collections = await Collection.find({ user_id: user_id }).sort({date: -1});
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,

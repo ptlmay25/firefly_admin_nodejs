@@ -56,7 +56,7 @@ class WithdrawRequestController {
     }
     static async viewAll(req, res) {
         try {
-            const collections = await Collection.find({});
+            const collections = await Collection.find({}).sort({createdAt: -1});
             return Afterware.sendResponse(req, res, 200, {
                 status: "success",
                 data: collections,
@@ -146,7 +146,7 @@ class WithdrawRequestController {
                     message: "Enter Proper user",
                 });
             } else {
-                const collections = await Collection.find({ userId: userId});
+                const collections = await Collection.find({ userId: userId}).sort({createdAt: -1});
                 return Afterware.sendResponse(req, res, 200, {
                     status: "success",
                     data: collections,
