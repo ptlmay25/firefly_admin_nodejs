@@ -24,24 +24,32 @@ class BuySellController {
             const token_price = (await TokenHistoryController._getLatestTokenPrice()).token_price
             const num_of_tokens = data.num_of_tokens || 1;
 
+            const payment_mode = data.payment_mode || "razorpay"
             const payment_token = data.payment_token || ""
-            if (payment_token == "") {
+            
+            // paid by acc balance or entry on admin
+            if ((payment_mode=="razorpay" && payment_token == "") ||
+                (payment_mode!="razorpay" && payment_token != ""))
+            {
                 // paid by acc balance
-                if (num_of_tokens * token_price > user.acc_bal) {
-                    return Afterware.sendResponse(req, res, 500, {
-                        status: "fail",
-                        message: "Balance not sufficient"
-                    });
+                if(payment_mode=="razorpay")
+                {
+                    if (num_of_tokens * token_price > user.acc_bal) {
+                        return Afterware.sendResponse(req, res, 500, {
+                            status: "fail",
+                            message: "Balance not sufficient"
+                        });
+                    }
+                    // update user
+                    user.acc_bal = user.acc_bal - num_of_tokens * token_price;
                 }
 
-                // update user
-                user.acc_bal = user.acc_bal - num_of_tokens * token_price;
                 user.tokens = user.tokens + num_of_tokens
                 user.total_purchase = user.total_purchase + num_of_tokens * token_price;
                 let updatedUser = await user.save();
 
                 // add record to history
-                const collection = new purchaseHistory({ user_id: user_id, num_of_tokens: num_of_tokens, token_price: token_price })
+                const collection = new purchaseHistory({ user_id: user_id, num_of_tokens: num_of_tokens, token_price: token_price, payment_mode: payment_mode, payment_token: payment_token})
                 let savedDoc = await collection.save()
 
                 return Afterware.sendResponse(req, res, 200, {
@@ -60,7 +68,7 @@ class BuySellController {
                 user.total_purchase = user.total_purchase + num_of_tokens * token_price;
                 let updatedUser = await user.save();
 
-                const collection1 = new purchaseHistory({ user_id: user_id, num_of_tokens: num_of_tokens, token_price: token_price, payment_token: payment_token })
+                const collection1 = new purchaseHistory({ user_id: user_id, num_of_tokens: num_of_tokens, token_price: token_price, payment_mode: payment_mode, payment_token: payment_token })
                 let savedDoc = await collection1.save()
 
                 return Afterware.sendResponse(req, res, 200, {
