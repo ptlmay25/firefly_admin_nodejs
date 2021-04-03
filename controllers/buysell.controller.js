@@ -25,11 +25,11 @@ class BuySellController {
             const num_of_tokens = data.num_of_tokens || 1;
 
             const payment_mode = data.payment_mode || "razorpay"
-            const payment_token = data.payment_token || ""
+            const payment_token = data.payment_token || "NA"
             
             // paid by acc balance or entry on admin
-            if ((payment_mode=="razorpay" && payment_token == "") ||
-                (payment_mode!="razorpay" && payment_token != ""))
+            if ((payment_mode=="razorpay" && payment_token == "NA") ||
+                (payment_mode!="razorpay" && payment_token != "NA"))
             {
                 // paid by acc balance
                 if(payment_mode=="razorpay")
