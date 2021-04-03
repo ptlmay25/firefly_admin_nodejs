@@ -26,7 +26,7 @@ const purchaseHistorySchema = new Schema({
     payment_token:{
         type: String,
         required: true,
-        default: ''
+        default: 'PAID_BY_ACC_BALANCE'
     },
     status: {
         type: String,
